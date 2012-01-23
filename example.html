@@ -13,6 +13,12 @@
 		$(function()
 		{
 			$("#foobar").pickList();
+			$("#foobar").pickList("insert",
+			{
+				item: $(".rich"),
+				value: 6,
+				label: "Text Label"
+			});
 		});
 	</script>
 
@@ -23,6 +29,10 @@
 		.pickList_list { list-style-type: none; margin: 0; padding: 0; float: left; width: 150px; height: 75px; border: 1px inset; overflow-y: auto; cursor: default; }
 		.pickList_selectedListItem { background-color: #A3C8F5; }
 		.pickList_listLabel { font-size: 0.9em; font-weight: bold; text-align: center; }
+
+		.pickList_listItem .image { float: left; }
+		.pickList_listItem .label { float: left; }
+		.pickList_listItem .clear { clear: both; }
 	</style>
 </head>
 
@@ -36,6 +46,12 @@
 		<option value="4" selected="selected">Option 4</option>
 		<option value="5">Option 5</option>
 	</select>
+</div>
+
+<div class="rich">
+	<div class="image"><img src="http://www.gstatic.com/codesite/ph/images/dl_arrow.gif" /></div>
+	<div class="label">Text Label</div>
+	<div class="clear"></div>
 </div>
 
 </body></html>

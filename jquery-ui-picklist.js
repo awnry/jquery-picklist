@@ -159,6 +159,7 @@
 				var copy = $("<li/>")
 						.text(text)
 						.val($(this).val())
+						.attr("label", text)
 						.addClass(self.options.listItemClass);
 
 				if($(this).attr("selected") == "selected")
@@ -303,11 +304,11 @@
 
 			items.sort(function(a, b)
 			{
-				if(a.text() > b.text())
+				if(a.attr("label") > b.attr("label"))
 				{
 					return 1;
 				}
-				else if(a.text() == b.text())
+				else if(a.attr("label") == b.attr("label"))
 				{
 					return 0;
 				}
@@ -438,6 +439,16 @@
 		destroy: function()
 		{
 			$.Widget.prototype.destroy.call(this);
+		},
+		
+		insert: function(item)
+		{
+			var self = this;
+
+			self.element.append( $("<option/>").val(item.value).text(item.label) );
+			self.sourceList.append( $("<li/>").val(item.value).attr("label", item.label).addClass(self.options.listItemClass).append(item.item) );
+
+			self._refresh();
 		}
 	});
 }(jQuery));
