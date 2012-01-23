@@ -357,16 +357,50 @@
 				}
 				else
 				{
+					self.lastSelectedItem = $(this);
 					self._addSelection( $(this) );
 				}
 			}
-			else
+			else if(e.shiftKey)
 			{
+				var current = $(this).val();
+				var last = self.lastSelectedItem.val();
+
+				if($(this).index() < $(self.lastSelectedItem).index())
+				{
+					var temp = current;
+					current = last;
+					last = temp;
+				}
+
+				var pastStart = false;
+				var beforeEnd = true;
+
+				self._clearSelections( $(this).parent() );
+
 				$(this).parent().children().each(function()
 				{
-					self._removeSelection( $(this) );
-				});
+					if($(this).val() == last)
+					{
+						pastStart = true;
+					}
 
+					if(pastStart && beforeEnd)
+					{
+						self._addSelection( $(this) );
+					}
+
+					if($(this).val() == current)
+					{
+						beforeEnd = false;
+					}
+
+				});
+			}
+			else
+			{
+				self.lastSelectedItem = $(this);
+				self._clearSelections( $(this).parent() );
 				self._addSelection( $(this) );
 			}
 
@@ -396,6 +430,16 @@
 					.removeClass("ui-selected")
 					.removeClass("ui-state-highlight")
 					.removeClass(self.options.selectedListItemClass);
+		},
+
+		_clearSelections: function(list)
+		{
+			var self = this;
+
+			list.children().each(function()
+			{
+				self._removeSelection( $(this) );
+			});
 		},
 
 		_setOption: function(key, value)
