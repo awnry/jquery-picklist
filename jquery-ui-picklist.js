@@ -83,7 +83,8 @@
 
 			var container = $("<div/>")
 					.addClass(self.options.listContainerClass)
-					.addClass(self.options.sourceListContainerClass);
+					.addClass(self.options.sourceListContainerClass)
+					.disableSelection();
 
 			var label = $("<div/>")
 					.text(self.options.sourceListLabel)
@@ -108,7 +109,8 @@
 
 			var container = $("<div/>")
 					.addClass(self.options.listContainerClass)
-					.addClass(self.options.targetListContainerClass);
+					.addClass(self.options.targetListContainerClass)
+					.disableSelection();
 
 			var label = $("<div/>")
 					.text(self.options.targetListLabel)
