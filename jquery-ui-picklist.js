@@ -254,25 +254,29 @@
 		{
 			var self = this;
 
-			// Refresh the states of the Add All and Remove All buttons.
+			// Enable/disable the Add All and Remove All buttons.
 			self.addAllButton.button( (self.sourceList.children().length > 0) ? "enable" : "disable" );
 			self.removeAllButton.button( (self.targetList.children().length > 0) ? "enable" : "disable" );
 
-			// Refresh the Add button state.
-			var sourceSelected = false;
-			self.sourceList.children(".ui-selected").each(function()
+			// Enable/disable the Add button state.
+			if(self.sourceList.children(".ui-selected").length)
 			{
-				sourceSelected = true;
-			});
-			self.addButton.button( sourceSelected ? "enable" : "disable" );
+				self.addButton.button("enable");
+			}
+			else
+			{
+				self.addButton.button("disable");
+			}
 
-			// Refresh the Remove button state.
-			var targetSelected = false;
-			self.targetList.children(".ui-selected").each(function()
+			// Enable/disable the Remove button state.
+			if(self.targetList.children(".ui-selected").length)
 			{
-				targetSelected = true;
-			});
-			self.removeButton.button( targetSelected ? "enable" : "disable" );
+				self.removeButton.button("enable");
+			}
+			else
+			{
+				self.removeButton.button("disable");
+			}
 
 			// Refresh the buttons.
 			self.controls.children().each(function()
