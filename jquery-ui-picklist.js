@@ -176,20 +176,14 @@
 		{
 			var self = this;
 
-			self.sourceList.children().each(function()
+			self.sourceList.children("[value='" + value + "']").each(function()
 			{
-				if($(this).val() == value)
-				{
-					self.targetList.append( self._removeSelection($(this)) );
-				}
+				self.targetList.append( self._removeSelection($(this)) );
 			});
 
-			self.element.children().each(function()
+			self.element.children("[value='" + value + "']").each(function()
 			{
-				if($(this).val() == value)
-				{
-					$(this).attr("selected", "selected");
-				}
+				$(this).attr("selected", "selected");
 			});
 		},
 
@@ -197,20 +191,14 @@
 		{
 			var self = this;
 
-			self.targetList.children().each(function()
+			self.targetList.children("[value='" + value + "']").each(function()
 			{
-				if($(this).val() == value)
-				{
-					self.sourceList.append( self._removeSelection($(this)) );
-				}
+				self.sourceList.append( self._removeSelection($(this)) );
 			});
 
-			self.element.children().each(function()
+			self.element.children("[value='" + value + "']").each(function()
 			{
-				if($(this).val() == value)
-				{
-					$(this).removeAttr("selected");
-				}
+				$(this).removeAttr("selected");
 			});
 		},
 
@@ -230,12 +218,9 @@
 		{
 			var self = e.data.pickList;
 
-			self.sourceList.children().each(function()
+			self.sourceList.children(".ui-selected").each(function()
 			{
-				if(self._isSelected( $(this) ))
-				{
-					self._addItem( $(this).val() );
-				}
+				self._addItem( $(this).val() );
 			});
 
 			self._refresh();
@@ -245,12 +230,9 @@
 		{
 			var self = e.data.pickList;
 
-			self.targetList.children().each(function()
+			self.targetList.children(".ui-selected").each(function()
 			{
-				if(self._isSelected( $(this) ))
-				{
-					self._removeItem( $(this).val() );
-				}
+				self._removeItem( $(this).val() );
 			});
 
 			self._refresh();
@@ -278,23 +260,17 @@
 
 			// Refresh the Add button state.
 			var sourceSelected = false;
-			self.sourceList.children().each(function()
+			self.sourceList.children(".ui-selected").each(function()
 			{
-				if(self._isSelected( $(this) ))
-				{
-					sourceSelected = true;
-				}
+				sourceSelected = true;
 			});
 			self.addButton.button( sourceSelected ? "enable" : "disable" );
 
 			// Refresh the Remove button state.
 			var targetSelected = false;
-			self.targetList.children().each(function()
+			self.targetList.children(".ui-selected").each(function()
 			{
-				if(self._isSelected( $(this) ))
-				{
-					targetSelected = true;
-				}
+				targetSelected = true;
 			});
 			self.removeButton.button( targetSelected ? "enable" : "disable" );
 
