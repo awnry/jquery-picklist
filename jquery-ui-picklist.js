@@ -1,9 +1,9 @@
 /**
  * jQuery UI PickList Widget
- * 
+ *
  * Copyright (c) 2012 Awnry Software
  * Distributed under the terms of the MIT License.
- * 
+ *
  * http://www.awnry.com/
  */
 (function($)
@@ -11,43 +11,43 @@
 	$.widget("awnry.pickList",
 	{
 		options:
-		{ 
+		{
 			// Container classes
-			mainClass:					"pickList",
-			listContainerClass:			"pickList_listContainer",
-			sourceListContainerClass:	"pickList_sourceListContainer",
-			controlsContainerClass:		"pickList_controlsContainer",
-			targetListContainerClass:	"pickList_targetListContainer",
-			listClass:					"pickList_list",
-			sourceListClass:			"pickList_sourceList",
-			targetListClass:			"pickList_targetList",
-			clearClass:					"pickList_clear",
+			mainClass:                  "pickList",
+			listContainerClass:         "pickList_listContainer",
+			sourceListContainerClass:   "pickList_sourceListContainer",
+			controlsContainerClass:     "pickList_controlsContainer",
+			targetListContainerClass:   "pickList_targetListContainer",
+			listClass:                  "pickList_list",
+			sourceListClass:            "pickList_sourceList",
+			targetListClass:            "pickList_targetList",
+			clearClass:                 "pickList_clear",
 
 			// List item classes
-			listItemClass:				"pickList_listItem",
-			selectedListItemClass:		"pickList_selectedListItem",
+			listItemClass:              "pickList_listItem",
+			selectedListItemClass:      "pickList_selectedListItem",
 
 			// Control classes
-			addAllClass:				"pickList_addAll",
-			addClass:					"pickList_add",
-			removeAllClass:				"pickList_removeAll",
-			removeClass:				"pickList_remove",
+			addAllClass:                "pickList_addAll",
+			addClass:                   "pickList_add",
+			removeAllClass:             "pickList_removeAll",
+			removeClass:                "pickList_remove",
 
 			// Control labels
-			addAllLabel:				"&gt;&gt;",
-			addLabel:					"&gt;",
-			removeAllLabel:				"&lt;&lt;",
-			removeLabel:				"&lt;",
+			addAllLabel:                "&gt;&gt;",
+			addLabel:                   "&gt;",
+			removeAllLabel:             "&lt;&lt;",
+			removeLabel:                "&lt;",
 
 			// List labels
-			listLabelClass:				"pickList_listLabel",
-			sourceListLabel:			"Available",
-			sourceListLabelClass:		"pickList_sourceListLabel",
-			targetListLabel:			"Selected",
-			targetListLabelClass:		"pickList_targetListLabel",
+			listLabelClass:             "pickList_listLabel",
+			sourceListLabel:            "Available",
+			sourceListLabelClass:       "pickList_sourceListLabel",
+			targetListLabel:            "Selected",
+			targetListLabelClass:       "pickList_targetListLabel",
 
 			// Behavior
-			sortItems:					true
+			sortItems:                  true
 		},
 
 		_create: function()
