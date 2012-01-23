@@ -53,6 +53,7 @@
 		_create: function()
 		{
 			var self = this;
+
 			self._buildPickList();
 			self._refresh();
 		},
@@ -377,18 +378,22 @@
 
 		_addSelection: function(listItem)
 		{
+			var self = this;
+
 			return listItem
 					.addClass("ui-selected")
 					.addClass("ui-state-highlight")
-					.addClass(this.options.selectedListItemClass);
+					.addClass(self.options.selectedListItemClass);
 		},
 
 		_removeSelection: function(listItem)
 		{
+			var self = this;
+
 			return listItem
 					.removeClass("ui-selected")
 					.removeClass("ui-state-highlight")
-					.removeClass(this.options.selectedListItemClass);
+					.removeClass(self.options.selectedListItemClass);
 		},
 
 		_setOption: function(key, value)
