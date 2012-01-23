@@ -52,13 +52,15 @@
 
 		_create: function()
 		{
-			self = this;
+			var self = this;
 			self._buildPickList();
 			self._refresh();
 		},
 
 		_buildPickList: function()
 		{
+			var self = this;
+
 			self.pickList = $("<div/>")
 					.hide()
 					.addClass(self.options.mainClass)
@@ -76,6 +78,8 @@
 
 		_buildSourceList: function()
 		{
+			var self = this;
+
 			var container = $("<div/>")
 					.addClass(self.options.listContainerClass)
 					.addClass(self.options.sourceListContainerClass);
@@ -88,7 +92,7 @@
 			self.sourceList = $("<ul/>")
 					.addClass(self.options.listClass)
 					.addClass(self.options.sourceListClass)
-					.delegate("li", "click", self._changeHandler);
+					.delegate("li", "click", {pickList: self}, self._changeHandler);
 
 			container
 					.append(label)
@@ -99,6 +103,8 @@
 
 		_buildTargetList: function()
 		{
+			var self = this;
+
 			var container = $("<div/>")
 					.addClass(self.options.listContainerClass)
 					.addClass(self.options.targetListContainerClass);
@@ -111,7 +117,7 @@
 			self.targetList = $("<ul/>")
 					.addClass(self.options.listClass)
 					.addClass(self.options.targetListClass)
-					.delegate("li", "click", self._changeHandler);
+					.delegate("li", "click", {pickList: self}, self._changeHandler);
 
 			container
 					.append(label)
@@ -122,12 +128,14 @@
 
 		_buildControls: function()
 		{
+			var self = this;
+
 			self.controls = $("<div/>").addClass(self.options.controlsContainerClass);
 
-			self.addAllButton = $("<button/>").button().click(self._addAllHandler).html(self.options.addAllLabel).addClass(self.options.addAllClass);
-			self.addButton = $("<button/>").button().click(self._addHandler).html(self.options.addLabel).addClass(self.options.addClass);
-			self.removeButton = $("<button/>").button().click(self._removeHandler).html(self.options.removeLabel).addClass(self.options.removeClass);
-			self.removeAllButton = $("<button/>").button().click(self._removeAllHandler).html(self.options.removeAllLabel).addClass(self.options.removeAllClass);
+			self.addAllButton = $("<button/>").button().click({pickList: self}, self._addAllHandler).html(self.options.addAllLabel).addClass(self.options.addAllClass);
+			self.addButton = $("<button/>").button().click({pickList: self}, self._addHandler).html(self.options.addLabel).addClass(self.options.addClass);
+			self.removeButton = $("<button/>").button().click({pickList: self}, self._removeHandler).html(self.options.removeLabel).addClass(self.options.removeClass);
+			self.removeAllButton = $("<button/>").button().click({pickList: self}, self._removeAllHandler).html(self.options.removeAllLabel).addClass(self.options.removeAllClass);
 
 			self.controls
 					.append(self.addAllButton)
@@ -140,6 +148,8 @@
 
 		_populateLists: function()
 		{
+			var self = this;
+
 			self.element.children().each(function()
 			{
 				var text = $(this).text();
@@ -161,6 +171,8 @@
 
 		_addItem: function(value)
 		{
+			var self = this;
+
 			self.sourceList.children().each(function()
 			{
 				if($(this).val() == value)
@@ -180,6 +192,8 @@
 
 		_removeItem: function(value)
 		{
+			var self = this;
+
 			self.targetList.children().each(function()
 			{
 				if($(this).val() == value)
@@ -197,8 +211,10 @@
 			});
 		},
 
-		_addAllHandler: function()
+		_addAllHandler: function(e)
 		{
+			var self = e.data.pickList;
+
 			self.sourceList.children().each(function()
 			{
 				self._addItem( $(this).val() );
@@ -207,8 +223,10 @@
 			self._refresh();
 		},
 
-		_addHandler: function()
+		_addHandler: function(e)
 		{
+			var self = e.data.pickList;
+
 			self.sourceList.children().each(function()
 			{
 				if(self._isSelected( $(this) ))
@@ -220,8 +238,10 @@
 			self._refresh();
 		},
 
-		_removeHandler: function()
+		_removeHandler: function(e)
 		{
+			var self = e.data.pickList;
+
 			self.targetList.children().each(function()
 			{
 				if(self._isSelected( $(this) ))
@@ -233,8 +253,10 @@
 			self._refresh();
 		},
 
-		_removeAllHandler: function()
+		_removeAllHandler: function(e)
 		{
+			var self = e.data.pickList;
+
 			self.targetList.children().each(function()
 			{
 				self._removeItem( $(this).val() );
@@ -245,6 +267,8 @@
 
 		_refresh: function()
 		{
+			var self = this;
+
 			// Refresh the states of the Add All and Remove All buttons.
 			self.addAllButton.button( (self.sourceList.children().length > 0) ? "enable" : "disable" );
 			self.removeAllButton.button( (self.targetList.children().length > 0) ? "enable" : "disable" );
@@ -320,6 +344,8 @@
 
 		_changeHandler: function(e)
 		{
+			var self = e.data.pickList;
+
 			if(e.ctrlKey)
 			{
 				if(self._isSelected( $(this) ))
@@ -354,7 +380,7 @@
 			return listItem
 					.addClass("ui-selected")
 					.addClass("ui-state-highlight")
-					.addClass(self.options.selectedListItemClass);
+					.addClass(this.options.selectedListItemClass);
 		},
 
 		_removeSelection: function(listItem)
@@ -362,7 +388,7 @@
 			return listItem
 					.removeClass("ui-selected")
 					.removeClass("ui-state-highlight")
-					.removeClass(self.options.selectedListItemClass);
+					.removeClass(this.options.selectedListItemClass);
 		},
 
 		_setOption: function(key, value)
