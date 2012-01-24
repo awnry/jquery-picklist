@@ -452,7 +452,7 @@
 		{
 			$.Widget.prototype.destroy.call(this);
 		},
-		
+
 		insert: function(item)
 		{
 			var self = this;
@@ -464,10 +464,7 @@
 		_createRichItem: function(item)
 		{
 			var self = this;
-			console.log("Item value = " + item.value);
-			console.log("Item label = " + item.label);
-			console.log("Item element = " + item.element);
-			
+
 			self.element.append( $("<option/>").val(item.value).text(item.label) );
 
 			return $("<li/>")
