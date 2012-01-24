@@ -4,31 +4,39 @@
 
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title>jQuery UI PickList Example</title>
+	<title>jQuery UI PickList Rich Content Example</title>
 
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="jquery-ui-picklist.js"></script>
+	<script type="text/javascript" src="../jquery-ui-picklist.js"></script>
 	<script type="text/javascript">
 		$(function()
 		{
-			$("#foobar").pickList(
+			// Example of adding rich content items during picklist creation.
+			$("#rich").pickList(
 			{
 				targetRichItems:
 				[
 					{
-						value:   7,
-						label:   "Argument Test",
-						element: $(".test")
+						value:   3,
+						label:   "Basketball",
+						element: $(".rich1")
+					},
+
+					{
+						value: 4,
+						label: "Soccer",
+						elment: $("<img src='images/soccer.png'/>")
 					}
 				]
 			});
 
-			$("#foobar").pickList("insert",
+			// Example of adding rich content items after picklist creation.
+			$("#rich").pickList("insert",
 			{
-				value:   6,
-				label:   "Text Label",
-				element: $(".rich")
+				value:   5,
+				label:   "Football",
+				element: $(".rich3")
 			});
 		});
 	</script>
@@ -40,6 +48,7 @@
 		.pickList_list { list-style-type: none; margin: 0; padding: 0; float: left; width: 150px; height: 75px; border: 1px inset; overflow-y: auto; cursor: default; }
 		.pickList_selectedListItem { background-color: #A3C8F5; }
 		.pickList_listLabel { font-size: 0.9em; font-weight: bold; text-align: center; }
+		.pickList_clear { clear: both; }
 
 		.pickList_listItem .image { float: left; }
 		.pickList_listItem .label { float: left; padding-left: 0.25em; }
@@ -49,24 +58,21 @@
 
 <body>
 
-<div>
-	<select id="foobar" name="foobar" multiple="multiple">
-		<option value="1">Option 1</option>
-		<option value="2" selected="selected">Option 2</option>
-		<option value="3">Option 3</option>
-		<option value="4" selected="selected">Option 4</option>
-		<option value="5">Option 5</option>
-	</select>
-</div>
+	<div>
+		<select id="rich" name="rich" multiple="multiple">
+			<option value="1">Non-Rich Item 1</option>
+			<option value="2">Non-Rich Item 2</option>
+		</select>
 
-<div class="rich">
-	<div class="image"><img src="http://www.gstatic.com/codesite/ph/images/dl_arrow.gif" /></div>
-	<div class="label">Text Label</div>
-	<div class="clear"></div>
-</div>
+		<div class="rich1">
+			<div class="image"><img src="images/basketball.png" /></div>
+			<div class="label">Basketball</div>
+			<div class="clear"></div>
+		</div>
 
-<div class="test">
-	<img src="http://www.gstatic.com/codesite/ph/images/dl_arrow.gif" />
-</div>
+		<div class="rich3">
+			<img src="images/football.png" /> Football
+		</div>
+	</div>
 
 </body></html>
