@@ -48,8 +48,8 @@
 
 			// Behavior
 			sortItems:                  true,
-			sourceRichItems:            new Array(),
-			targetRichItems:            new Array()
+			sourceRichItems:            [],
+			targetRichItems:            []
 		},
 
 		_create: function()
@@ -181,7 +181,7 @@
 
 			$(self.options.targetRichItems).each(function()
 			{
-				self.sourceList.append( self._createRichItem(this) );
+				self.targetList.append( self._createRichItem(this, true) );
 			});
 		},
 
@@ -461,11 +461,18 @@
 			self._refresh();
 		},
 
-		_createRichItem: function(item)
+		_createRichItem: function(item, selected)
 		{
 			var self = this;
 
-			self.element.append( $("<option/>").val(item.value).text(item.label) );
+			var selectItem = $("<option/>").val(item.value).text(item.label);
+
+			if(selected)
+			{
+				selectItem.attr("selected", "selected");
+			}
+
+			self.element.append( selectItem );
 
 			return $("<li/>")
 					.val(item.value)

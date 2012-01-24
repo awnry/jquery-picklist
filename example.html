@@ -12,7 +12,18 @@
 	<script type="text/javascript">
 		$(function()
 		{
-			$("#foobar").pickList();
+			$("#foobar").pickList(
+			{
+				targetRichItems:
+				[
+					{
+						value:   7,
+						label:   "Argument Test",
+						element: $(".test")
+					}
+				]
+			});
+
 			$("#foobar").pickList("insert",
 			{
 				value:   6,
@@ -52,6 +63,10 @@
 	<div class="image"><img src="http://www.gstatic.com/codesite/ph/images/dl_arrow.gif" /></div>
 	<div class="label">Text Label</div>
 	<div class="clear"></div>
+</div>
+
+<div class="test">
+	<img src="http://www.gstatic.com/codesite/ph/images/dl_arrow.gif" />
 </div>
 
 </body></html>
