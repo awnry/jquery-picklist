@@ -48,6 +48,9 @@
 
 			// Behavior
 			sortItems:                  true,
+			sortAttribute:              "label",
+
+			// Rich content items
 			sourceRichItems:            [],
 			targetRichItems:            []
 		},
@@ -300,12 +303,12 @@
 			// Sort the selection lists.
 			if(self.options.sortItems)
 			{
-				self._sortItems(self.sourceList);
-				self._sortItems(self.targetList);
+				self._sortItems(self.sourceList, self.options);
+				self._sortItems(self.targetList, self.options);
 			}
 		},
 
-		_sortItems: function(list)
+		_sortItems: function(list, options)
 		{
 			var items = new Array();
 
@@ -316,11 +319,11 @@
 
 			items.sort(function(a, b)
 			{
-				if(a.attr("label") > b.attr("label"))
+				if(a.attr(options.sortAttribute) > b.attr(options.sortAttribute))
 				{
 					return 1;
 				}
-				else if(a.attr("label") == b.attr("label"))
+				else if(a.attr(options.sortAttribute) == b.attr(options.sortAttribute))
 				{
 					return 0;
 				}
