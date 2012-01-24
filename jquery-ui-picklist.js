@@ -49,7 +49,6 @@
 			// Sorting
 			sortItems:                  true,
 			sortAttribute:              "label",
-			sort:                       null,
 
 			// Rich content items
 			sourceRichItems:            [],
@@ -59,11 +58,6 @@
 		_create: function()
 		{
 			var self = this;
-
-			if((self.options.sort != null) && (typeof self.options.sort == "function"))
-			{
-				self._sortItems = self.options.sort;
-			}
 
 			self._buildPickList();
 			self._refresh();
