@@ -15,9 +15,9 @@
 			$("#foobar").pickList();
 			$("#foobar").pickList("insert",
 			{
-				item: $(".rich"),
-				value: 6,
-				label: "Text Label"
+				value:   6,
+				label:   "Text Label",
+				element: $(".rich")
 			});
 		});
 	</script>
@@ -31,7 +31,7 @@
 		.pickList_listLabel { font-size: 0.9em; font-weight: bold; text-align: center; }
 
 		.pickList_listItem .image { float: left; }
-		.pickList_listItem .label { float: left; }
+		.pickList_listItem .label { float: left; padding-left: 0.25em; }
 		.pickList_listItem .clear { clear: both; }
 	</style>
 </head>

@@ -47,7 +47,9 @@
 			targetListLabelClass:       "pickList_targetListLabel",
 
 			// Behavior
-			sortItems:                  true
+			sortItems:                  true,
+			sourceRichItems:            new Array(),
+			targetRichItems:            new Array()
 		},
 
 		_create: function()
@@ -170,6 +172,16 @@
 				{
 					self.sourceList.append( copy );
 				}
+			});
+
+			$(self.options.sourceRichItems).each(function()
+			{
+				self.sourceList.append( self._createRichItem(this) );
+			});
+
+			$(self.options.targetRichItems).each(function()
+			{
+				self.sourceList.append( self._createRichItem(this) );
 			});
 		},
 
@@ -445,10 +457,24 @@
 		{
 			var self = this;
 
-			self.element.append( $("<option/>").val(item.value).text(item.label) );
-			self.sourceList.append( $("<li/>").val(item.value).attr("label", item.label).addClass(self.options.listItemClass).append(item.item) );
-
+			self.sourceList.append( self._createRichItem(item) );
 			self._refresh();
+		},
+
+		_createRichItem: function(item)
+		{
+			var self = this;
+			console.log("Item value = " + item.value);
+			console.log("Item label = " + item.label);
+			console.log("Item element = " + item.element);
+			
+			self.element.append( $("<option/>").val(item.value).text(item.label) );
+
+			return $("<li/>")
+					.val(item.value)
+					.attr("label", item.label)
+					.addClass(self.options.listItemClass)
+					.append(item.element);
 		}
 	});
 }(jQuery));
