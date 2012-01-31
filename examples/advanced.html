@@ -4,7 +4,7 @@
 
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<title>jQuery UI PickList Example</title>
+	<title>jQuery UI PickList Advanced Example</title>
 
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
@@ -12,7 +12,16 @@
 	<script type="text/javascript">
 		$(function()
 		{
-			$("#advanced").pickList();
+			$("#advanced").pickList(
+			{
+				sourceListLabel:	"Unadded",
+				targetListLabel:	"Added",
+				addAllLabel:		"Add All",
+				addLabel:			"Add",
+				removeAllLabel:		"Remove All",
+				removeLabel:		"Remove",
+				sortAttribute:		"label"
+			});
 		});
 	</script>
 
@@ -31,11 +40,11 @@
 
 	<div>
 		<select id="advanced" name="advanced" multiple="multiple">
-			<option value="1">Advanced 1</option>
-			<option value="2">Advanced 2</option>
-			<option value="3">Advanced 3</option>
-			<option value="4">Advanced 4</option>
-			<option value="5">Advanced 5</option>
+			<option value="1">Zebra</option>
+			<option value="2">Rabbit</option>
+			<option value="3">Snake</option>
+			<option value="4">Bear</option>
+			<option value="5">Starfish</option>
 		</select>
 	</div>
 
