@@ -51,8 +51,7 @@
 			sortAttribute:              "label",
 
 			// Rich content items
-			sourceRichItems:            [],
-			targetRichItems:            []
+			richItems:                  []
 		},
 
 		_create: function()
@@ -177,14 +176,10 @@
 				}
 			});
 
-			$(self.options.sourceRichItems).each(function()
+			$(self.options.richItems).each(function()
 			{
-				self.sourceList.append( self._createRichItem(this) );
-			});
-
-			$(self.options.targetRichItems).each(function()
-			{
-				self.targetList.append( self._createRichItem(this, true) );
+				var list = this.selected ? self.targetList : self.sourceList;
+				list.append( self._createRichItem(this) );
 			});
 		},
 
@@ -460,17 +455,19 @@
 		{
 			var self = this;
 
-			self.sourceList.append( self._createRichItem(item) );
+			var list = item.selected ? self.targetList : self.sourceList;
+			list.append( self._createRichItem(item) );
+
 			self._refresh();
 		},
 
-		_createRichItem: function(item, selected)
+		_createRichItem: function(item)
 		{
 			var self = this;
 
 			var selectItem = $("<option/>").val(item.value).text(item.label);
 
-			if(selected)
+			if(item.selected)
 			{
 				selectItem.attr("selected", "selected");
 			}

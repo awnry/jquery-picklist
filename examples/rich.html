@@ -15,18 +15,20 @@
 			// Example of adding rich content items during picklist creation.
 			$("#rich").pickList(
 			{
-				targetRichItems:
+				richItems:
 				[
 					{
-						value:   3,
-						label:   "Basketball",
-						element: $(".rich1")
+						value:    3,
+						label:    "Basketball",
+						selected: true,
+						element:  $(".rich1")
 					},
 
 					{
-						value: 4,
-						label: "Soccer",
-						element: $("<img src='images/soccer.png'/>")
+						value:    4,
+						label:    "Soccer",
+						selected: true,
+						element:  $("<img src='images/soccer.png'/>")
 					}
 				]
 			});
@@ -34,9 +36,10 @@
 			// Example of adding rich content items after picklist creation.
 			$("#rich").pickList("insert",
 			{
-				value:   5,
-				label:   "Football",
-				element: $(".rich3")
+				value:    5,
+				label:    "Football",
+				selected: false,
+				element:  $(".rich3")
 			});
 		});
 	</script>
