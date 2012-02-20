@@ -1,0 +1,37 @@
+{
+	"name": "picklist",
+	"version": "0.4.0",
+	"title": "jQuery UI PickList",
+
+	"author":
+	{
+		"name": "Jonathon Freeman",
+		"email": "jonathon@awnry.com",
+		"url": "http://blog.awnry.com/"
+	},
+
+	"licenses":
+	[
+		{
+			"type": "MIT",
+			"url": "LICENSE.txt"
+		}
+	],
+
+	"dependencies":
+	{
+		"jquery": "1.7",
+		"jqueryui": "1.8"
+	},
+
+	"homepage": "http://code.google.com/p/jquery-ui-picklist/",
+
+	"description": "Turns an HTML multiple option select box into a side-by-side pick list control",
+
+	"files":
+	[
+		"jquery-ui-picklist.js",
+		"examples",
+		"LICENSE.txt"
+	]
+}
