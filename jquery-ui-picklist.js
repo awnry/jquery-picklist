@@ -25,6 +25,7 @@
 
 			// List item classes
 			listItemClass:              "pickList_listItem",
+			richListItemClass:          "pickList_richListItem",
 			selectedListItemClass:      "pickList_selectedListItem",
 
 			// Control classes
@@ -478,6 +479,7 @@
 					.val(item.value)
 					.attr("label", item.label)
 					.addClass(self.options.listItemClass)
+					.addClass(self.options.richListItemClass)
 					.append(item.element);
 		}
 	});
