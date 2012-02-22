@@ -10,6 +10,7 @@
 {
 	if($.widget == null)
 	{
+		/***** BEGIN jquery.ui.widget.js (from jQuery UI 1.8.17) *****/
 		// jQuery 1.4+
 		if ( $.cleanData ) {
 			var _cleanData = $.cleanData;
@@ -269,6 +270,7 @@
 					event.isDefaultPrevented() );
 			}
 		};
+		/***** END jquery.ui.widget.js (from jQuery UI 1.8.17) *****/
 	}
 
 /******************************************************************************/
