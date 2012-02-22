@@ -4,7 +4,7 @@
  * Copyright (c) 2012 Awnry Software
  * Distributed under the terms of the MIT License.
  *
- * http://www.awnry.com/
+ * http://code.google.com/p/jquery-ui-picklist/
  */
 (function($)
 {
