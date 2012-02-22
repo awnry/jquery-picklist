@@ -8,8 +8,6 @@
  */
 (function($)
 {
-
-
 	$.widget("awnry.pickList",
 	{
 		options:
