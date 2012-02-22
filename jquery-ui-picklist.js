@@ -8,6 +8,272 @@
  */
 (function($)
 {
+	if($.widget == null)
+	{
+		// jQuery 1.4+
+		if ( $.cleanData ) {
+			var _cleanData = $.cleanData;
+			$.cleanData = function( elems ) {
+				for ( var i = 0, elem; (elem = elems[i]) != null; i++ ) {
+					try {
+						$( elem ).triggerHandler( "remove" );
+					// http://bugs.jquery.com/ticket/8235
+					} catch( e ) {}
+				}
+				_cleanData( elems );
+			};
+		} else {
+			var _remove = $.fn.remove;
+			$.fn.remove = function( selector, keepData ) {
+				return this.each(function() {
+					if ( !keepData ) {
+						if ( !selector || $.filter( selector, [ this ] ).length ) {
+							$( "*", this ).add( [ this ] ).each(function() {
+								try {
+									$( this ).triggerHandler( "remove" );
+								// http://bugs.jquery.com/ticket/8235
+								} catch( e ) {}
+							});
+						}
+					}
+					return _remove.call( $(this), selector, keepData );
+				});
+			};
+		}
+
+		$.widget = function( name, base, prototype ) {
+			var namespace = name.split( "." )[ 0 ],
+				fullName;
+			name = name.split( "." )[ 1 ];
+			fullName = namespace + "-" + name;
+
+			if ( !prototype ) {
+				prototype = base;
+				base = $.Widget;
+			}
+
+			// create selector for plugin
+			$.expr[ ":" ][ fullName ] = function( elem ) {
+				return !!$.data( elem, name );
+			};
+
+			$[ namespace ] = $[ namespace ] || {};
+			$[ namespace ][ name ] = function( options, element ) {
+				// allow instantiation without initializing for simple inheritance
+				if ( arguments.length ) {
+					this._createWidget( options, element );
+				}
+			};
+
+			var basePrototype = new base();
+			// we need to make the options hash a property directly on the new instance
+			// otherwise we'll modify the options hash on the prototype that we're
+			// inheriting from
+//			$.each( basePrototype, function( key, val ) {
+//				if ( $.isPlainObject(val) ) {
+//					basePrototype[ key ] = $.extend( {}, val );
+//				}
+//			});
+			basePrototype.options = $.extend( true, {}, basePrototype.options );
+			$[ namespace ][ name ].prototype = $.extend( true, basePrototype, {
+				namespace: namespace,
+				widgetName: name,
+				widgetEventPrefix: $[ namespace ][ name ].prototype.widgetEventPrefix || name,
+				widgetBaseClass: fullName
+			}, prototype );
+
+			$.widget.bridge( name, $[ namespace ][ name ] );
+		};
+
+		$.widget.bridge = function( name, object ) {
+			$.fn[ name ] = function( options ) {
+				var isMethodCall = typeof options === "string",
+					args = Array.prototype.slice.call( arguments, 1 ),
+					returnValue = this;
+
+				// allow multiple hashes to be passed on init
+				options = !isMethodCall && args.length ?
+					$.extend.apply( null, [ true, options ].concat(args) ) :
+					options;
+
+				// prevent calls to internal methods
+				if ( isMethodCall && options.charAt( 0 ) === "_" ) {
+					return returnValue;
+				}
+
+				if ( isMethodCall ) {
+					this.each(function() {
+						var instance = $.data( this, name ),
+							methodValue = instance && $.isFunction( instance[options] ) ?
+								instance[ options ].apply( instance, args ) :
+								instance;
+						// TODO: add this back in 1.9 and use $.error() (see #5972)
+//						if ( !instance ) {
+//							throw "cannot call methods on " + name + " prior to initialization; " +
+//								"attempted to call method '" + options + "'";
+//						}
+//						if ( !$.isFunction( instance[options] ) ) {
+//							throw "no such method '" + options + "' for " + name + " widget instance";
+//						}
+//						var methodValue = instance[ options ].apply( instance, args );
+						if ( methodValue !== instance && methodValue !== undefined ) {
+							returnValue = methodValue;
+							return false;
+						}
+					});
+				} else {
+					this.each(function() {
+						var instance = $.data( this, name );
+						if ( instance ) {
+							instance.option( options || {} )._init();
+						} else {
+							$.data( this, name, new object( options, this ) );
+						}
+					});
+				}
+
+				return returnValue;
+			};
+		};
+
+		$.Widget = function( options, element ) {
+			// allow instantiation without initializing for simple inheritance
+			if ( arguments.length ) {
+				this._createWidget( options, element );
+			}
+		};
+
+		$.Widget.prototype = {
+			widgetName: "widget",
+			widgetEventPrefix: "",
+			options: {
+				disabled: false
+			},
+			_createWidget: function( options, element ) {
+				// $.widget.bridge stores the plugin instance, but we do it anyway
+				// so that it's stored even before the _create function runs
+				$.data( element, this.widgetName, this );
+				this.element = $( element );
+				this.options = $.extend( true, {},
+					this.options,
+					this._getCreateOptions(),
+					options );
+
+				var self = this;
+				this.element.bind( "remove." + this.widgetName, function() {
+					self.destroy();
+				});
+
+				this._create();
+				this._trigger( "create" );
+				this._init();
+			},
+			_getCreateOptions: function() {
+				return $.metadata && $.metadata.get( this.element[0] )[ this.widgetName ];
+			},
+			_create: function() {},
+			_init: function() {},
+
+			destroy: function() {
+				this.element
+					.unbind( "." + this.widgetName )
+					.removeData( this.widgetName );
+				this.widget()
+					.unbind( "." + this.widgetName )
+					.removeAttr( "aria-disabled" )
+					.removeClass(
+						this.widgetBaseClass + "-disabled " +
+						"ui-state-disabled" );
+			},
+
+			widget: function() {
+				return this.element;
+			},
+
+			option: function( key, value ) {
+				var options = key;
+
+				if ( arguments.length === 0 ) {
+					// don't return a reference to the internal hash
+					return $.extend( {}, this.options );
+				}
+
+				if  (typeof key === "string" ) {
+					if ( value === undefined ) {
+						return this.options[ key ];
+					}
+					options = {};
+					options[ key ] = value;
+				}
+
+				this._setOptions( options );
+
+				return this;
+			},
+			_setOptions: function( options ) {
+				var self = this;
+				$.each( options, function( key, value ) {
+					self._setOption( key, value );
+				});
+
+				return this;
+			},
+			_setOption: function( key, value ) {
+				this.options[ key ] = value;
+
+				if ( key === "disabled" ) {
+					this.widget()
+						[ value ? "addClass" : "removeClass"](
+							this.widgetBaseClass + "-disabled" + " " +
+							"ui-state-disabled" )
+						.attr( "aria-disabled", value );
+				}
+
+				return this;
+			},
+
+			enable: function() {
+				return this._setOption( "disabled", false );
+			},
+			disable: function() {
+				return this._setOption( "disabled", true );
+			},
+
+			_trigger: function( type, event, data ) {
+				var prop, orig,
+					callback = this.options[ type ];
+
+				data = data || {};
+				event = $.Event( event );
+				event.type = ( type === this.widgetEventPrefix ?
+					type :
+					this.widgetEventPrefix + type ).toLowerCase();
+				// the original event may come from any element
+				// so we need to reset the target on the new event
+				event.target = this.element[ 0 ];
+
+				// copy original event properties over to the new event
+				orig = event.originalEvent;
+				if ( orig ) {
+					for ( prop in orig ) {
+						if ( !( prop in event ) ) {
+							event[ prop ] = orig[ prop ];
+						}
+					}
+				}
+
+				this.element.trigger( event, data );
+
+				return !( $.isFunction(callback) &&
+					callback.call( this.element[0], event, data ) === false ||
+					event.isDefaultPrevented() );
+			}
+		};
+	}
+
+/******************************************************************************/
+
+	// Our actual widget code begins here.
 	$.widget("awnry.pickList",
 	{
 		options:
@@ -89,7 +355,16 @@
 			var container = $("<div/>")
 					.addClass(self.options.listContainerClass)
 					.addClass(self.options.sourceListContainerClass)
-					.disableSelection();
+					.css({
+						"-moz-user-select": "none",
+						"-webkit-user-select": "none",
+						"user-select": "none",
+						"-ms-user-select": "none"
+					})
+					.each(function()
+					{
+						this.onselectstart = function() { return false; };
+					});
 
 			var label = $("<div/>")
 					.text(self.options.sourceListLabel)
@@ -115,7 +390,16 @@
 			var container = $("<div/>")
 					.addClass(self.options.listContainerClass)
 					.addClass(self.options.targetListContainerClass)
-					.disableSelection();
+					.css({
+						"-moz-user-select": "none",
+						"-webkit-user-select": "none",
+						"user-select": "none",
+						"-ms-user-select": "none"
+					})
+					.each(function()
+					{
+						this.onselectstart = function() { return false; };
+					});
 
 			var label = $("<div/>")
 					.text(self.options.targetListLabel)
@@ -140,10 +424,10 @@
 
 			self.controls = $("<div/>").addClass(self.options.controlsContainerClass);
 
-			self.addAllButton = $("<button/>").button().click({pickList: self}, self._addAllHandler).html(self.options.addAllLabel).addClass(self.options.addAllClass);
-			self.addButton = $("<button/>").button().click({pickList: self}, self._addHandler).html(self.options.addLabel).addClass(self.options.addClass);
-			self.removeButton = $("<button/>").button().click({pickList: self}, self._removeHandler).html(self.options.removeLabel).addClass(self.options.removeClass);
-			self.removeAllButton = $("<button/>").button().click({pickList: self}, self._removeAllHandler).html(self.options.removeAllLabel).addClass(self.options.removeAllClass);
+			self.addAllButton = $("<button/>").click({pickList: self}, self._addAllHandler).html(self.options.addAllLabel).addClass(self.options.addAllClass);
+			self.addButton = $("<button/>").click({pickList: self}, self._addHandler).html(self.options.addLabel).addClass(self.options.addClass);
+			self.removeButton = $("<button/>").click({pickList: self}, self._removeHandler).html(self.options.removeLabel).addClass(self.options.removeClass);
+			self.removeAllButton = $("<button/>").click({pickList: self}, self._removeAllHandler).html(self.options.removeAllLabel).addClass(self.options.removeAllClass);
 
 			self.controls
 					.append(self.addAllButton)
@@ -266,35 +550,45 @@
 		{
 			var self = this;
 
-			// Enable/disable the Add All and Remove All buttons.
-			self.addAllButton.button( (self.sourceList.children().length > 0) ? "enable" : "disable" );
-			self.removeAllButton.button( (self.targetList.children().length > 0) ? "enable" : "disable" );
+			// Enable/disable the Add All button state.
+			if(self.sourceList.children().length > 0)
+			{
+				self.addAllButton.removeAttr("disabled");
+			}
+			else
+			{
+				self.addAllButton.attr("disabled", "disabled");
+			}
+
+			// Enable/disable the Remove All button state.
+			if(self.targetList.children().length > 0)
+			{
+				self.removeAllButton.removeAttr("disabled");
+			}
+			else
+			{
+				self.removeAllButton.attr("disabled", "disabled");
+			}
 
 			// Enable/disable the Add button state.
 			if(self.sourceList.children(".ui-selected").length)
 			{
-				self.addButton.button("enable");
+				self.addButton.removeAttr("disabled");
 			}
 			else
 			{
-				self.addButton.button("disable");
+				self.addButton.attr("disabled", "disabled");
 			}
 
 			// Enable/disable the Remove button state.
 			if(self.targetList.children(".ui-selected").length)
 			{
-				self.removeButton.button("enable");
+				self.removeButton.removeAttr("disabled");
 			}
 			else
 			{
-				self.removeButton.button("disable");
+				self.removeButton.attr("disabled", "disabled");
 			}
-
-			// Refresh the buttons.
-			self.controls.children().each(function()
-			{
-				$(this).button("refresh");
-			});
 
 			// Sort the selection lists.
 			if(self.options.sortItems)
