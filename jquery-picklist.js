@@ -553,7 +553,7 @@
 			var self = this;
 
 			// Enable/disable the Add All button state.
-			if(self.sourceList.children().length > 0)
+			if(self.sourceList.children().length)
 			{
 				self.addAllButton.removeAttr("disabled");
 			}
@@ -563,7 +563,7 @@
 			}
 
 			// Enable/disable the Remove All button state.
-			if(self.targetList.children().length > 0)
+			if(self.targetList.children().length)
 			{
 				self.removeAllButton.removeAttr("disabled");
 			}
