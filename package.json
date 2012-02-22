@@ -29,7 +29,7 @@
 
 	"files":
 	[
-		"jquery-ui-picklist.js",
+		"jquery-picklist.js",
 		"examples",
 		"LICENSE.txt"
 	]
