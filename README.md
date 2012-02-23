@@ -1,6 +1,6 @@
 #jQuery PickList#
 
-jQuery PickList, or jquery-picklist, is a jQuery-based widget that turns a regular multiple option select box into a side-by-side pick list.
+jQuery PickList, or `jquery-picklist`, is a jQuery-based widget that turns a regular multiple option select box into a side-by-side pick list.
 
 For detailed usage demos, visit: http://code.google.com/p/jquery-ui-picklist/wiki/Demos
 
