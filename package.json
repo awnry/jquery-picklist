@@ -30,6 +30,7 @@
 	"files":
 	[
 		"jquery-picklist.js",
+		"jquery.ui.widget.js",
 		"examples",
 		"LICENSE"
 	]
