@@ -13,7 +13,7 @@ For detailed usage demos, visit: http://code.google.com/p/jquery-ui-picklist/wik
   * Compatible with ordinary form submission
   * Works in all major browsers (IE, FF, Chrome, Opera, and Safari)
   * Many options for customization
-  * **No longer depends on jQuery UI!** Only regular jQuery is required now
+  * **No longer requires jQuery UI!**
 
 ##Example Usage##
 
