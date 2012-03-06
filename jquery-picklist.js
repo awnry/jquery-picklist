@@ -51,7 +51,8 @@
 			sortItems:                  true,
 			sortAttribute:              "label",
 
-			// Rich content items
+			// Additional list items
+			items:						[],
 			richItems:                  []
 		},
 
@@ -195,10 +196,14 @@
 				}
 			});
 
+			$(self.options.items).each(function()
+			{
+				self.insert(this);
+			});
+
 			$(self.options.richItems).each(function()
 			{
-				var list = this.selected ? self.targetList : self.sourceList;
-				list.append( self._createRichItem(this) );
+				self.insert(this);
 			});
 		},
 
