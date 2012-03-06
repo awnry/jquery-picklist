@@ -53,7 +53,7 @@
 
 			// Additional list items
 			items:						[],
-			richItems:                  []
+			richItems:                  []     // DEPRECATED -- Use "items" instead.
 		},
 
 		_create: function()
