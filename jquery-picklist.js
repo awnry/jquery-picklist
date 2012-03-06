@@ -490,15 +490,17 @@
 			var self = this;
 
 			var list = item.selected ? self.targetList : self.sourceList;
-			list.append( self._createRichItem(item) );
+			var selectItem = self._createSelectItem(item);
+			var listItem = (item.element == undefined) ? self._createRegularItem(item) : self._createRichItem(item);
+
+			self.element.append(selectItem);
+			list.append(listItem);
 
 			self._refresh();
 		},
 
-		_createRichItem: function(item)
+		_createSelectItem: function(item)
 		{
-			var self = this;
-
 			var selectItem = $("<option/>").val(item.value).text(item.label);
 
 			if(item.selected)
@@ -506,7 +508,23 @@
 				selectItem.attr("selected", "selected");
 			}
 
-			self.element.append( selectItem );
+			return selectItem;
+		},
+
+		_createRegularItem: function(item)
+		{
+			var self = this;
+
+			return $("<li/>")
+					.val(item.value)
+					.text(item.label)
+					.attr("label", item.label)
+					.addClass(self.options.listItemClass);
+		},
+
+		_createRichItem: function(item)
+		{
+			var self = this;
 
 			return $("<li/>")
 					.val(item.value)
