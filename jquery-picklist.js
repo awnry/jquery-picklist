@@ -477,7 +477,12 @@
 
 		destroy: function()
 		{
-			$.Widget.prototype.destroy.call(this);
+			var self = this;
+
+			self.pickList.remove();
+			self.element.show();
+
+			$.Widget.prototype.destroy.call(self);
 		},
 
 		insert: function(item)
