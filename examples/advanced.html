@@ -20,7 +20,24 @@
 				addLabel:			"Add",
 				removeAllLabel:		"Remove All",
 				removeLabel:		"Remove",
-				sortAttribute:		"value"
+				sortAttribute:		"value",
+				items:
+				[
+					{
+						value: 6,
+						label: "Afterwards #1",
+						selected: false
+					}
+				]
+			});
+
+			// Example of adding a regular item after picklist creation.
+			// Note there is no "element" property as that's for rich content only.
+			$("#advanced").pickList("insert",
+			{
+				value: 7,
+				label: "Afterwards #2",
+				selected: true
 			});
 		});
 	</script>
