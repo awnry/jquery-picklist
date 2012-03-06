@@ -41,6 +41,15 @@
 				selected: false,
 				element:  $(".rich3")
 			});
+
+			// Example of adding a regular item after picklist creation.
+			// Note there is no "element" property as that's for rich content only.
+			$("#rich").pickList("insert",
+			{
+				value: 6,
+				label: "Added Afterwards",
+				selected: false
+			});
 		});
 	</script>
 
