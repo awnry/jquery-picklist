@@ -7,7 +7,10 @@
 	<title>jQuery PickList Rich Content Example</title>
 
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+	<!-- REMOVE THIS if you're using jQuery UI. -->
 	<script type="text/javascript" src="../jquery.ui.widget.js"></script>
+
 	<script type="text/javascript" src="../jquery-picklist.js"></script>
 	<script type="text/javascript">
 		$(function()
@@ -44,15 +47,9 @@
 		});
 	</script>
 
-	<style type="text/css">
-		.pickList_sourceListContainer, .pickList_controlsContainer, .pickList_targetListContainer { float: left; margin: 0.25em; }
-		.pickList_controlsContainer { text-align: center; }
-		.pickList_controlsContainer button { display: block; width: 100%; text-align: center; }
-		.pickList_list { list-style-type: none; margin: 0; padding: 0; float: left; width: 150px; height: 75px; border: 1px inset; overflow-y: auto; cursor: default; }
-		.pickList_selectedListItem { background-color: #A3C8F5; }
-		.pickList_listLabel { font-size: 0.9em; font-weight: bold; text-align: center; }
-		.pickList_clear { clear: both; }
+	<link type="text/css" href="../jquery-picklist.css" rel="stylesheet" />
 
+	<style type="text/css">
 		.pickList_listItem .image { float: left; }
 		.pickList_listItem .label { float: left; padding-left: 0.25em; }
 		.pickList_listItem .clear { clear: both; }
