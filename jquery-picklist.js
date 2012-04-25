@@ -52,8 +52,7 @@
 			sortAttribute:              "label",
 
 			// Additional list items
-			items:						[],
-			richItems:                  []     // DEPRECATED -- Use "items" instead.
+			items:						[]
 		},
 
 		_create: function()
@@ -196,15 +195,7 @@
 				}
 			});
 
-			$(self.options.items).each(function()
-			{
-				self.insert(this);
-			});
-
-			$(self.options.richItems).each(function()
-			{
-				self.insert(this);
-			});
+			self.insertItems(self.options.items);
 		},
 
 		_addItem: function(value)
@@ -504,39 +495,56 @@
 			self._refresh();
 		},
 
+		insertItems: function(items)
+		{
+			var self = this;
+
+			var selectItems = [];
+			var sourceItems = [];
+			var targetItems = [];
+
+			$(items).each(function()
+			{
+				var selectItem = self._createSelectItem(this);
+				var listItem = (this.element == undefined) ? self._createRegularItem(this) : self._createRichItem(this);
+
+				selectItems.push(selectItem);
+
+				if(this.selected)
+				{
+					targetItems.push(listItem);
+				}
+				else
+				{
+					sourceItems.push(listItem);
+				}
+			});
+
+			self.element.append(selectItems.join("\n"));
+			self.sourceList.append(sourceItems.join("\n"));
+			self.targetList.append(targetItems.join("\n"));
+		},
+
 		_createSelectItem: function(item)
 		{
-			var selectItem = $("<option/>").val(item.value).text(item.label);
-
-			if(item.selected)
-			{
-				selectItem.attr("selected", "selected");
-			}
-
-			return selectItem;
+			var selected = item.selected ? " selected='selected'" : "";
+			return "<option value='" + item.value + "'" + selected + ">" + item.label + "</option>";
 		},
 
 		_createRegularItem: function(item)
 		{
 			var self = this;
-
-			return $("<li/>")
-					.val(item.value)
-					.text(item.label)
-					.attr("label", item.label)
-					.addClass(self.options.listItemClass);
+			return "<li value='" + item.value + "' label='" + item.label + "' class='" + self.options.listItemClass + "'>" + item.label + "</li>";
 		},
 
 		_createRichItem: function(item)
 		{
 			var self = this;
 
-			return $("<li/>")
-					.val(item.value)
-					.attr("label", item.label)
-					.addClass(self.options.listItemClass)
-					.addClass(self.options.richListItemClass)
-					.append(item.element);
+			var richItemHtml = item.element.html();
+			item.element.hide();
+
+			return "<li value='" + item.value + "' label='" + item.label + "' class='" + self.options.listItemClass + " " + self.options.richListItemClass + "'>" + richItemHtml + "</li>";
 		}
 	});
 }(jQuery));
