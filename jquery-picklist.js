@@ -108,7 +108,7 @@
 			self.sourceList = $("<ul/>")
 					.addClass(self.options.listClass)
 					.addClass(self.options.sourceListClass)
-					.delegate("li", "click", {pickList: self}, self._changeHandler);
+					.delegate("li", "click", { pickList: self }, self._changeHandler);
 
 			container
 					.append(label)
@@ -143,7 +143,7 @@
 			self.targetList = $("<ul/>")
 					.addClass(self.options.listClass)
 					.addClass(self.options.targetListClass)
-					.delegate("li", "click", {pickList: self}, self._changeHandler);
+					.delegate("li", "click", { pickList: self }, self._changeHandler);
 
 			container
 					.append(label)
@@ -280,6 +280,20 @@
 		{
 			var self = this;
 
+			self._refreshControls();
+
+			// Sort the selection lists.
+			if(self.options.sortItems)
+			{
+				self._sortItems(self.sourceList, self.options);
+				self._sortItems(self.targetList, self.options);
+			}
+		},
+
+		_refreshControls: function()
+		{
+			var self = this;
+
 			// Enable/disable the Add All button state.
 			if(self.sourceList.children().length)
 			{
@@ -318,13 +332,6 @@
 			else
 			{
 				self.removeButton.attr("disabled", "disabled");
-			}
-
-			// Sort the selection lists.
-			if(self.options.sortItems)
-			{
-				self._sortItems(self.sourceList, self.options);
-				self._sortItems(self.targetList, self.options);
 			}
 		},
 
@@ -420,7 +427,7 @@
 				self._addSelection( $(this) );
 			}
 
-			self._refresh();
+			self._refreshControls();
 		},
 
 		_isSelected: function(listItem)
