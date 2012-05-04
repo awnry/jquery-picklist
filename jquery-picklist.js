@@ -226,10 +226,8 @@
 		{
 			var self = e.data.pickList;
 
-			self.sourceList.children().each(function()
-			{
-				self._addItem( $(this) );
-			});
+			var items = self.sourceList.children();
+			self.targetList.append( self._removeSelections(items) );
 
 			self._refresh();
 		},
@@ -238,10 +236,8 @@
 		{
 			var self = e.data.pickList;
 
-			self.sourceList.children(".ui-selected").each(function()
-			{
-				self._addItem( $(this) );
-			});
+			var items = self.sourceList.children(".ui-selected");
+			self.targetList.append( self._removeSelections(items) );
 
 			self._refresh();
 		},
@@ -250,10 +246,8 @@
 		{
 			var self = e.data.pickList;
 
-			self.targetList.children(".ui-selected").each(function()
-			{
-				self._removeItem( $(this) );
-			});
+			var items = self.targetList.children(".ui-selected");
+			self.sourceList.append( self._removeSelections(items) );
 
 			self._refresh();
 		},
@@ -262,10 +256,8 @@
 		{
 			var self = e.data.pickList;
 
-			self.targetList.children().each(function()
-			{
-				self._removeItem( $(this) );
-			});
+			var items = self.targetList.children();
+			self.sourceList.append( self._removeSelections(items) );
 
 			self._refresh();
 		},
@@ -447,6 +439,21 @@
 					.removeClass("ui-selected")
 					.removeClass("ui-state-highlight")
 					.removeClass(self.options.selectedListItemClass);
+		},
+
+		_removeSelections: function(listItems)
+		{
+			var self = this;
+
+			listItems.each(function()
+			{
+				$(this)
+						.removeClass("ui-selected")
+						.removeClass("ui-state-highlight")
+						.removeClass(self.options.selectedListItemClass);
+			});
+
+			return listItems;
 		},
 
 		_clearSelections: function(list)
