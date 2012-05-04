@@ -198,31 +198,25 @@
 			self.insertItems(self.options.items);
 		},
 
-		_addItem: function(value)
+		_addItem: function(item)
 		{
 			var self = this;
 
-			self.sourceList.children("[value='" + value + "']").each(function()
-			{
-				self.targetList.append( self._removeSelection($(this)) );
-			});
+			self.targetList.append( self._removeSelection(item) );
 
-			self.element.children("[value='" + value + "']").each(function()
+			self.element.children("[value='" + item.val() + "']").each(function()
 			{
 				$(this).attr("selected", "selected");
 			});
 		},
 
-		_removeItem: function(value)
+		_removeItem: function(item)
 		{
 			var self = this;
 
-			self.targetList.children("[value='" + value + "']").each(function()
-			{
-				self.sourceList.append( self._removeSelection($(this)) );
-			});
+			self.sourceList.append( self._removeSelection(item) );
 
-			self.element.children("[value='" + value + "']").each(function()
+			self.element.children("[value='" + item.val() + "']").each(function()
 			{
 				$(this).removeAttr("selected");
 			});
@@ -234,7 +228,7 @@
 
 			self.sourceList.children().each(function()
 			{
-				self._addItem( $(this).val() );
+				self._addItem( $(this) );
 			});
 
 			self._refresh();
@@ -246,7 +240,7 @@
 
 			self.sourceList.children(".ui-selected").each(function()
 			{
-				self._addItem( $(this).val() );
+				self._addItem( $(this) );
 			});
 
 			self._refresh();
@@ -258,7 +252,7 @@
 
 			self.targetList.children(".ui-selected").each(function()
 			{
-				self._removeItem( $(this).val() );
+				self._removeItem( $(this) );
 			});
 
 			self._refresh();
@@ -270,7 +264,7 @@
 
 			self.targetList.children().each(function()
 			{
-				self._removeItem( $(this).val() );
+				self._removeItem( $(this) );
 			});
 
 			self._refresh();
