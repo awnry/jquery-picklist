@@ -35,15 +35,49 @@
 				"afterRefreshControls": eventHandler,
 				"onDestroy": eventHandler
 			});
+
+			$("#clearConsole").click(function()
+			{
+				clearConsole();
+				return false;
+			});
 		});
 
 		function eventHandler(event)
 		{
-			console.log( event.type.replace("picklist", "") );
+			$("#console ol").append( $("<li>" + event.type.replace("picklist", "") + "</li>") );
+			$("#console").scrollTop( $("#console")[0].scrollHeight - $("#console").height() );
+		}
+
+		function clearConsole()
+		{
+			$("#console ol").html("");
 		}
 	</script>
 
 	<link type="text/css" href="../jquery-picklist.css" rel="stylesheet" />
+	<style type="text/css">
+		#console
+		{
+			height: 10em;
+			width: 30em;
+			margin: 0.5em;
+			overflow-y: scroll;
+			border: 1px inset;
+		}
+
+		#consoleLabel
+		{
+			font-weight: bold;
+			margin-top: 1em;
+		}
+
+		#console ol
+		{
+			margin: 0;
+			padding: 0 0 0 2em;
+		}
+	</style>
 </head>
 
 <body>
@@ -57,5 +91,9 @@
 			<option value="5">Option 5</option>
 		</select>
 	</div>
+
+	<div id="consoleLabel">Event Log:</div>
+	<div id="console"><ol></ol></div>
+	<a id="clearConsole" href="#">Clear Console</a>
 
 </body></html>
