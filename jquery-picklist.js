@@ -67,6 +67,8 @@
 		{
 			var self = this;
 
+			self._trigger("beforeBuild");
+
 			self.pickList = $("<div/>")
 					.hide()
 					.addClass(self.options.mainClass)
@@ -80,6 +82,8 @@
 
 			self.element.hide();
 			self.pickList.show();
+
+			self._trigger("afterBuild");
 		},
 
 		_buildSourceList: function()
@@ -176,6 +180,8 @@
 		{
 			var self = this;
 
+			self._trigger("beforePopulate");
+
 			self.element.children().each(function()
 			{
 				var text = $(this).text();
@@ -196,6 +202,8 @@
 			});
 
 			self.insertItems(self.options.items);
+
+			self._trigger("afterPopulate");
 		},
 
 		_addItem: function(item)
@@ -226,45 +234,63 @@
 		{
 			var self = e.data.pickList;
 
+			self._trigger("beforeAddAll");
+
 			var items = self.sourceList.children();
 			self.targetList.append( self._removeSelections(items) );
 
 			self._refresh();
+
+			self._trigger("afterAddAll");
 		},
 
 		_addHandler: function(e)
 		{
 			var self = e.data.pickList;
 
+			self._trigger("beforeAdd");
+
 			var items = self.sourceList.children(".ui-selected");
 			self.targetList.append( self._removeSelections(items) );
 
 			self._refresh();
+
+			self._trigger("afterAdd");
 		},
 
 		_removeHandler: function(e)
 		{
 			var self = e.data.pickList;
 
+			self._trigger("beforeRemove");
+
 			var items = self.targetList.children(".ui-selected");
 			self.sourceList.append( self._removeSelections(items) );
 
 			self._refresh();
+
+			self._trigger("afterRemove");
 		},
 
 		_removeAllHandler: function(e)
 		{
 			var self = e.data.pickList;
 
+			self._trigger("beforeRemoveAll");
+
 			var items = self.targetList.children();
 			self.sourceList.append( self._removeSelections(items) );
 
 			self._refresh();
+
+			self._trigger("afterRemoveAll");
 		},
 
 		_refresh: function()
 		{
 			var self = this;
+
+			self._trigger("beforeRefresh");
 
 			self._refreshControls();
 
@@ -274,11 +300,15 @@
 				self._sortItems(self.sourceList, self.options);
 				self._sortItems(self.targetList, self.options);
 			}
+
+			self._trigger("afterRefresh");
 		},
 
 		_refreshControls: function()
 		{
 			var self = this;
+
+			self._trigger("beforeRefreshControls");
 
 			// Enable/disable the Add All button state.
 			if(self.sourceList.children().length)
@@ -319,6 +349,8 @@
 			{
 				self.removeButton.attr("disabled", "disabled");
 			}
+
+			self._trigger("afterRefreshControls");
 		},
 
 		_sortItems: function(list, options)
@@ -482,6 +514,8 @@
 		destroy: function()
 		{
 			var self = this;
+
+			self._trigger("onDestroy");
 
 			self.pickList.remove();
 			self.element.show();

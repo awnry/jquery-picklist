@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>jQuery PickList Callbacks Example</title>
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+	<!-- REMOVE THIS if you're using jQuery UI. -->
+	<script type="text/javascript" src="../jquery.ui.widget.js"></script>
+
+	<script type="text/javascript" src="../jquery-picklist.js"></script>
+	<script type="text/javascript">
+		$(function()
+		{
+			$("#callbacks").pickList(
+			{
+				"beforeBuild": eventHandler,
+				"afterBuild": eventHandler,
+				"beforePopulate": eventHandler,
+				"afterPopulate": eventHandler,
+				"beforeAddAll": eventHandler,
+				"afterAddAll": eventHandler,
+				"beforeAdd": eventHandler,
+				"afterAdd": eventHandler,
+				"beforeRemove": eventHandler,
+				"afterRemove": eventHandler,
+				"beforeRemoveAll": eventHandler,
+				"afterRemoveAll": eventHandler,
+				"beforeRefresh": eventHandler,
+				"afterRefresh": eventHandler,
+				"beforeRefreshControls": eventHandler,
+				"afterRefreshControls": eventHandler,
+				"onDestroy": eventHandler
+			});
+		});
+
+		function eventHandler(event)
+		{
+			console.log( event.type.replace("picklist", "") );
+		}
+	</script>
+
+	<link type="text/css" href="../jquery-picklist.css" rel="stylesheet" />
+</head>
+
+<body>
+
+	<div>
+		<select id="callbacks" name="callbacks" multiple="multiple">
+			<option value="1">Option 1</option>
+			<option value="2" selected="selected">Option 2</option>
+			<option value="3">Option 3</option>
+			<option value="4" selected="selected">Option 4</option>
+			<option value="5">Option 5</option>
+		</select>
+	</div>
+
+</body></html>
