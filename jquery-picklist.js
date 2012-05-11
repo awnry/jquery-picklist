@@ -583,7 +583,7 @@
 		{
 			var self = this;
 
-			var richItemHtml = item.element.html();
+			var richItemHtml = item.element.clone().wrap("<div>").parent().html();
 			item.element.hide();
 
 			return "<li value='" + item.value + "' label='" + item.label + "' class='" + self.options.listItemClass + " " + self.options.richListItemClass + "'>" + richItemHtml + "</li>";
