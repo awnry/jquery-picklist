@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>jQuery PickList Basic Example (Using string values)</title>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="../jquery-picklist.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#basic").pickList({ useData:true, sourceListLabel:'Programming Languages', targetListLabel:'The ones I like/love'});
+        });
+    </script>
+
+    <style type="text/css">
+        .pickList_sourceListContainer, .pickList_controlsContainer, .pickList_targetListContainer {
+            float: left;
+            margin: 0.25em;
+        }
+
+        .pickList_controlsContainer {
+            text-align: center;
+        }
+
+        .pickList_controlsContainer button {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        .pickList_list {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            float: left;
+            width: 150px;
+            height: 75px;
+            border: 1px inset;
+            overflow-y: auto;
+            cursor: default;
+        }
+
+        .pickList_selectedListItem {
+            background-color: #A3C8F5;
+        }
+
+        .pickList_listLabel {
+            font-size: 0.9em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .pickList_clear {
+            clear: both;
+        }
+    </style>
+</head>
+
+<body>
+
+<div>
+    <select id="basic" name="basic" multiple="multiple">
+        <option value="Java" data-value="1">Java</option>
+        <option value="Groovy" data-value="2" selected>Groovy</option>
+        <option value="Scala" data-value="3">Scala</option>
+        <option value="Ruby" data-value="4">Ruby</option>
+        <option value="Javascript" data-value="5">JavaScript</option>
+        <option value="CoffeeScript" data-value="6" selected>CoffeeScript</option>
+        <option value="Python" data-value="7" selected>Python</option>
+    </select>
+</div>
+
+</body>
+</html>
