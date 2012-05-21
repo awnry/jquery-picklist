@@ -14,6 +14,9 @@ For detailed usage demos, visit: http://code.google.com/p/jquery-ui-picklist/wik
   * Works in all major browsers (IE, FF, Chrome, Opera, and Safari)
   * Many options for customization
   * **No longer requires jQuery UI!**
+  
+## Allow file access in chrome to run Jasmine tests ##
+Start Chrome with --allow-file-access-from-files
 
 ##Example Usage##
 
@@ -33,3 +36,22 @@ For detailed usage demos, visit: http://code.google.com/p/jquery-ui-picklist/wik
 		<option value="4" selected="selected">Option 4</option>
 		<option value="5">Option 5</option>
 	</select>
+	
+###JavaScript (Enable string values  with {useData: true})###
+
+	$(function()
+	{
+		$("#languages").pickList({useData: true});
+	});
+
+###HTML###
+
+	<select id="languages" name="languages" multiple="multiple">
+		<option value="JavaScript" data-value="1">JavaScript</option>
+		<option value="CoffeeScript" data-value="2" selected="selected">CoffeeScript</option>
+		<option value="Groovy" data-value="3">Groovy</option>
+		<option value="Python" data-value="4" selected="selected">Python</option>
+		<option value="Java" data-value="5">Java</option>
+	</select>
+
+	

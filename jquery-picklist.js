@@ -51,8 +51,11 @@
 			sortItems:                  true,
 			sortAttribute:              "label",
 
-			// Rich content items
-			richItems:                  []
+			// Additional list items
+			items:						[],
+
+            // Allow string value for select options
+            useData:                    false
 		},
 
 		_create: function()
@@ -67,6 +70,8 @@
 		{
 			var self = this;
 
+			self._trigger("beforeBuild");
+
 			self.pickList = $("<div/>")
 					.hide()
 					.addClass(self.options.mainClass)
@@ -80,6 +85,8 @@
 
 			self.element.hide();
 			self.pickList.show();
+
+			self._trigger("afterBuild");
 		},
 
 		_buildSourceList: function()
@@ -108,7 +115,7 @@
 			self.sourceList = $("<ul/>")
 					.addClass(self.options.listClass)
 					.addClass(self.options.sourceListClass)
-					.delegate("li", "click", {pickList: self}, self._changeHandler);
+					.delegate("li", "click", { pickList: self }, self._changeHandler);
 
 			container
 					.append(label)
@@ -143,7 +150,7 @@
 			self.targetList = $("<ul/>")
 					.addClass(self.options.listClass)
 					.addClass(self.options.targetListClass)
-					.delegate("li", "click", {pickList: self}, self._changeHandler);
+					.delegate("li", "click", { pickList: self }, self._changeHandler);
 
 			container
 					.append(label)
@@ -176,6 +183,8 @@
 		{
 			var self = this;
 
+			self._trigger("beforePopulate");
+
 			self.element.children().each(function()
 			{
 				var text = $(this).text();
@@ -184,6 +193,11 @@
 						.val($(this).val())
 						.attr("label", text)
 						.addClass(self.options.listItemClass);
+
+                if (self.options.useData) {
+                    $(copy).val($(this).attr('data-value'));
+                }
+
 
 				if($(this).attr("selected") == "selected")
 				{
@@ -195,94 +209,130 @@
 				}
 			});
 
-			$(self.options.richItems).each(function()
-			{
-				var list = this.selected ? self.targetList : self.sourceList;
-				list.append( self._createRichItem(this) );
-			});
+			self.insertItems(self.options.items);
+
+			self._trigger("afterPopulate");
 		},
 
-		_addItem: function(value)
+		_addItem: function(item)
 		{
 			var self = this;
 
-			self.sourceList.children("[value='" + value + "']").each(function()
-			{
-				self.targetList.append( self._removeSelection($(this)) );
-			});
+			self.targetList.append( self._removeSelection(item) );
 
-			self.element.children("[value='" + value + "']").each(function()
-			{
-				$(this).attr("selected", "selected");
-			});
+            self.element.children("[value='" + item.val() + "']").each(function()
+            {
+                $(this).attr("selected", "selected");
+            });
 		},
 
-		_removeItem: function(value)
+		_removeItem: function(item)
 		{
 			var self = this;
 
-			self.targetList.children("[value='" + value + "']").each(function()
-			{
-				self.sourceList.append( self._removeSelection($(this)) );
-			});
+			self.sourceList.append( self._removeSelection(item) );
 
-			self.element.children("[value='" + value + "']").each(function()
-			{
-				$(this).removeAttr("selected");
-			});
+            self.element.children("[value='" + item.val() + "']").each(function()
+            {
+                $(this).removeAttr("selected");
+            });
 		},
 
 		_addAllHandler: function(e)
 		{
 			var self = e.data.pickList;
 
-			self.sourceList.children().each(function()
-			{
-				self._addItem( $(this).val() );
-			});
+			self._trigger("beforeAddAll");
+
+            self.sourceList.children().each(function () {
+                self._addSelectedItem($(this).val());
+            });
+
+            var items = self.sourceList.children();
+			self.targetList.append( self._removeSelections(items) );
 
 			self._refresh();
+
+			self._trigger("afterAddAll");
 		},
 
 		_addHandler: function(e)
 		{
 			var self = e.data.pickList;
 
-			self.sourceList.children(".ui-selected").each(function()
-			{
-				self._addItem( $(this).val() );
-			});
+			self._trigger("beforeAdd");
+
+            self.sourceList.children(".ui-selected").each(function () {
+                self._addSelectedItem($(this).val());
+            });
+
+            var items = self.sourceList.children(".ui-selected");
+			self.targetList.append( self._removeSelections(items) );
 
 			self._refresh();
+
+			self._trigger("afterAdd");
 		},
 
 		_removeHandler: function(e)
 		{
 			var self = e.data.pickList;
 
-			self.targetList.children(".ui-selected").each(function()
-			{
-				self._removeItem( $(this).val() );
-			});
+			self._trigger("beforeRemove");
+
+            self.targetList.children(".ui-selected").each(function () {
+                self._removeSelectedItem($(this).val());
+            });
+
+            var items = self.targetList.children(".ui-selected");
+			self.sourceList.append( self._removeSelections(items) );
 
 			self._refresh();
+
+			self._trigger("afterRemove");
 		},
 
 		_removeAllHandler: function(e)
 		{
 			var self = e.data.pickList;
 
-			self.targetList.children().each(function()
-			{
-				self._removeItem( $(this).val() );
-			});
+			self._trigger("beforeRemoveAll");
+
+            self.targetList.children().each(function () {
+               self._removeSelectedItem($(this).val());
+            });
+
+			var items = self.targetList.children();
+			self.sourceList.append( self._removeSelections(items) );
 
 			self._refresh();
+
+			self._trigger("afterRemoveAll");
 		},
 
 		_refresh: function()
 		{
 			var self = this;
+
+			self._trigger("beforeRefresh");
+
+			self._refreshControls();
+
+			// Sort the selection lists.
+			if(self.options.sortItems)
+			{
+				self._sortItems(self.sourceList, self.options);
+				self._sortItems(self.targetList, self.options);
+			}
+
+			self._trigger("afterRefresh");
+		},
+
+		_refreshControls: function()
+		{
+			var self = this;
+
+			self._trigger("beforeRefreshControls");
 
 			// Enable/disable the Add All button state.
 			if(self.sourceList.children().length)
@@ -324,12 +374,7 @@
 				self.removeButton.attr("disabled", "disabled");
 			}
 
-			// Sort the selection lists.
-			if(self.options.sortItems)
-			{
-				self._sortItems(self.sourceList, self.options);
-				self._sortItems(self.targetList, self.options);
-			}
+			self._trigger("afterRefreshControls");
 		},
 
 		_sortItems: function(list, options)
@@ -424,7 +469,7 @@
 				self._addSelection( $(this) );
 			}
 
-			self._refresh();
+			self._refreshControls();
 		},
 
 		_isSelected: function(listItem)
@@ -452,6 +497,21 @@
 					.removeClass(self.options.selectedListItemClass);
 		},
 
+		_removeSelections: function(listItems)
+		{
+			var self = this;
+
+			listItems.each(function()
+			{
+				$(this)
+						.removeClass("ui-selected")
+						.removeClass("ui-state-highlight")
+						.removeClass(self.options.selectedListItemClass);
+			});
+
+			return listItems;
+		},
+
 		_clearSelections: function(list)
 		{
 			var self = this;
@@ -477,7 +537,14 @@
 
 		destroy: function()
 		{
-			$.Widget.prototype.destroy.call(this);
+			var self = this;
+
+			self._trigger("onDestroy");
+
+			self.pickList.remove();
+			self.element.show();
+
+			$.Widget.prototype.destroy.call(self);
 		},
 
 		insert: function(item)
@@ -485,30 +552,93 @@
 			var self = this;
 
 			var list = item.selected ? self.targetList : self.sourceList;
-			list.append( self._createRichItem(item) );
+			var selectItem = self._createSelectItem(item);
+			var listItem = (item.element == undefined) ? self._createRegularItem(item) : self._createRichItem(item);
+
+			self.element.append(selectItem);
+			list.append(listItem);
 
 			self._refresh();
+		},
+
+		insertItems: function(items)
+		{
+			var self = this;
+
+			var selectItems = [];
+			var sourceItems = [];
+			var targetItems = [];
+
+			$(items).each(function()
+			{
+				var selectItem = self._createSelectItem(this);
+				var listItem = (this.element == undefined) ? self._createRegularItem(this) : self._createRichItem(this);
+
+				selectItems.push(selectItem);
+
+				if(this.selected)
+				{
+					targetItems.push(listItem);
+				}
+				else
+				{
+					sourceItems.push(listItem);
+				}
+			});
+
+			self.element.append(selectItems.join("\n"));
+			self.sourceList.append(sourceItems.join("\n"));
+			self.targetList.append(targetItems.join("\n"));
+		},
+
+		_createSelectItem: function(item)
+		{
+			var selected = item.selected ? " selected='selected'" : "";
+			return "<option value='" + item.value + "'" + selected + ">" + item.label + "</option>";
+		},
+
+		_createRegularItem: function(item)
+		{
+			var self = this;
+			return "<li value='" + item.value + "' label='" + item.label + "' class='" + self.options.listItemClass + "'>" + item.label + "</li>";
 		},
 
 		_createRichItem: function(item)
 		{
 			var self = this;
 
-			var selectItem = $("<option/>").val(item.value).text(item.label);
+			var richItemHtml = item.element.clone().wrap("<div>").parent().html();
+			item.element.hide();
 
-			if(item.selected)
-			{
-				selectItem.attr("selected", "selected");
-			}
+			return "<li value='" + item.value + "' label='" + item.label + "' class='" + self.options.listItemClass + " " + self.options.richListItemClass + "'>" + richItemHtml + "</li>";
+		},
 
-			self.element.append( selectItem );
+        _addSelectedItem: function(value)
+        {
+            var self = this;
+            if (self.options.useData) {
+                self.element.children("[data-value='" + value + "']").each(function () {
+                    $(this).attr("selected", "selected");
+                });
+            } else {
+                self.element.children("[value='" + value + "']").each(function () {
+                    $(this).attr("selected", "selected");
+                });
+            }
+        },
 
-			return $("<li/>")
-					.val(item.value)
-					.attr("label", item.label)
-					.addClass(self.options.listItemClass)
-					.addClass(self.options.richListItemClass)
-					.append(item.element);
-		}
+        _removeSelectedItem: function(value)
+        {
+            var self = this;
+            if (self.options.useData) {
+                self.element.children("[data-value='" + value + "']").each(function () {
+                    $(this).removeAttr("selected");
+                });
+            } else {
+                self.element.children("[value='" + value + "']").each(function () {
+                    $(this).removeAttr("selected");
+                });
+            }
+        }
 	});
 }(jQuery));
