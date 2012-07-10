@@ -51,6 +51,9 @@
 			sortItems:                  true,
 			sortAttribute:              "label",
 
+			// Name of custom value attribute for list items
+			listItemValueAttribute:     "pickList:value",
+
 			// Additional list items
 			items:						[]
 		},
@@ -187,8 +190,8 @@
 				var text = $(this).text();
 				var copy = $("<li/>")
 						.text(text)
-						.val($(this).val())
 						.attr("label", text)
+						.attr(self.options.listItemValueAttribute, $(this).val())
 						.addClass(self.options.listItemClass);
 
 				if($(this).attr("selected") == "selected")
@@ -206,30 +209,6 @@
 			self._trigger("afterPopulate");
 		},
 
-		_addItem: function(item)
-		{
-			var self = this;
-
-			self.targetList.append( self._removeSelection(item) );
-
-			self.element.children("[value='" + item.val() + "']").each(function()
-			{
-				$(this).attr("selected", "selected");
-			});
-		},
-
-		_removeItem: function(item)
-		{
-			var self = this;
-
-			self.sourceList.append( self._removeSelection(item) );
-
-			self.element.children("[value='" + item.val() + "']").each(function()
-			{
-				$(this).removeAttr("selected");
-			});
-		},
-
 		_addAllHandler: function(e)
 		{
 			var self = e.data.pickList;
@@ -238,6 +217,11 @@
 
 			var items = self.sourceList.children();
 			self.targetList.append( self._removeSelections(items) );
+
+			items.each(function()
+			{
+				self.element.children("[value='" + self._getItemValue(this) + "']").attr("selected", "selected");
+			});
 
 			self._refresh();
 
@@ -253,6 +237,11 @@
 			var items = self.sourceList.children(".ui-selected");
 			self.targetList.append( self._removeSelections(items) );
 
+			items.each(function()
+			{
+				self.element.children("[value='" + self._getItemValue(this) + "']").attr("selected", "selected");
+			});
+
 			self._refresh();
 
 			self._trigger("afterAdd");
@@ -267,6 +256,11 @@
 			var items = self.targetList.children(".ui-selected");
 			self.sourceList.append( self._removeSelections(items) );
 
+			items.each(function()
+			{
+				self.element.children("[value='" + self._getItemValue(this) + "']").removeAttr("selected");
+			});
+
 			self._refresh();
 
 			self._trigger("afterRemove");
@@ -280,6 +274,11 @@
 
 			var items = self.targetList.children();
 			self.sourceList.append( self._removeSelections(items) );
+
+			items.each(function()
+			{
+				self.element.children("[value='" + self._getItemValue(this) + "']").removeAttr("selected");
+			});
 
 			self._refresh();
 
@@ -404,8 +403,8 @@
 			}
 			else if(e.shiftKey)
 			{
-				var current = $(this).val();
-				var last = self.lastSelectedItem.val();
+				var current = self._getItemValue(this);
+				var last = self._getItemValue(self.lastSelectedItem);
 
 				if($(this).index() < $(self.lastSelectedItem).index())
 				{
@@ -421,7 +420,7 @@
 
 				$(this).parent().children().each(function()
 				{
-					if($(this).val() == last)
+					if(self._getItemValue(this) == last)
 					{
 						pastStart = true;
 					}
@@ -431,7 +430,7 @@
 						self._addSelection( $(this) );
 					}
 
-					if($(this).val() == current)
+					if(self._getItemValue(this) == current)
 					{
 						beforeEnd = false;
 					}
@@ -576,7 +575,7 @@
 		_createRegularItem: function(item)
 		{
 			var self = this;
-			return "<li value='" + item.value + "' label='" + item.label + "' class='" + self.options.listItemClass + "'>" + item.label + "</li>";
+			return "<li " + self.options.listItemValueAttribute + "='" + item.value + "' label='" + item.label + "' class='" + self.options.listItemClass + "'>" + item.label + "</li>";
 		},
 
 		_createRichItem: function(item)
@@ -586,7 +585,13 @@
 			var richItemHtml = item.element.clone().wrap("<div>").parent().html();
 			item.element.hide();
 
-			return "<li value='" + item.value + "' label='" + item.label + "' class='" + self.options.listItemClass + " " + self.options.richListItemClass + "'>" + richItemHtml + "</li>";
+			return "<li " + self.options.listItemValueAttribute + "='" + item.value + "' label='" + item.label + "' class='" + self.options.listItemClass + " " + self.options.richListItemClass + "'>" + richItemHtml + "</li>";
+		},
+
+		_getItemValue: function(item)
+		{
+			var self = this;
+			return $(item).attr(self.options.listItemValueAttribute);
 		}
 	});
 }(jQuery));
