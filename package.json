@@ -1,6 +1,6 @@
 {
 	"name": "picklist",
-	"version": "0.8.0",
+	"version": "0.9.0",
 	"title": "jQuery PickList",
 
 	"author":
@@ -31,7 +31,11 @@
 	[
 		"jquery-picklist.js",
 		"jquery.ui.widget.js",
+		"jquery-picklist.css",
+		"jquery-picklist-ie7.css",
+		"LICENSE",
+		"README.md",
 		"examples",
-		"LICENSE"
+		"tests"
 	]
 }
