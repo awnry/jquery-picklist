@@ -52,7 +52,7 @@
 			sortAttribute:              "label",
 
 			// Name of custom value attribute for list items
-			listItemValueAttribute:     "pickList:value",
+			listItemValueAttribute:     "data-value",
 
 			// Additional list items
 			items:						[]
@@ -528,7 +528,7 @@
 
 			var list = item.selected ? self.targetList : self.sourceList;
 			var selectItem = self._createSelectItem(item);
-			var listItem = (item.element == undefined) ? self._createRegularItem(item) : self._createRichItem(item);
+			var listItem = self._createListItem(item);
 
 			self.element.append(selectItem);
 			list.append(listItem);
@@ -547,7 +547,7 @@
 			$(items).each(function()
 			{
 				var selectItem = self._createSelectItem(this);
-				var listItem = (this.element == undefined) ? self._createRegularItem(this) : self._createRichItem(this);
+				var listItem = self._createListItem(this);
 
 				selectItems.push(selectItem);
 
@@ -572,20 +572,18 @@
 			return "<option value='" + item.value + "'" + selected + ">" + item.label + "</option>";
 		},
 
-		_createRegularItem: function(item)
+		_createListItem: function(item)
 		{
 			var self = this;
+
+			if(item.element != undefined)
+			{
+				var richItemHtml = item.element.clone().wrap("<div>").parent().html();
+				item.element.hide();
+				return "<li " + self.options.listItemValueAttribute + "='" + item.value + "' label='" + item.label + "' class='" + self.options.listItemClass + " " + self.options.richListItemClass + "'>" + richItemHtml + "</li>";				
+			}
+
 			return "<li " + self.options.listItemValueAttribute + "='" + item.value + "' label='" + item.label + "' class='" + self.options.listItemClass + "'>" + item.label + "</li>";
-		},
-
-		_createRichItem: function(item)
-		{
-			var self = this;
-
-			var richItemHtml = item.element.clone().wrap("<div>").parent().html();
-			item.element.hide();
-
-			return "<li " + self.options.listItemValueAttribute + "='" + item.value + "' label='" + item.label + "' class='" + self.options.listItemClass + " " + self.options.richListItemClass + "'>" + richItemHtml + "</li>";
 		},
 
 		_getItemValue: function(item)
