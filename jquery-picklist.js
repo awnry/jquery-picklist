@@ -226,6 +226,7 @@
 			self._refresh();
 
 			self._trigger("afterAddAll");
+			self._trigger("onChange");
 		},
 
 		_addHandler: function(e)
@@ -245,6 +246,7 @@
 			self._refresh();
 
 			self._trigger("afterAdd");
+			self._trigger("onChange");
 		},
 
 		_removeHandler: function(e)
@@ -264,6 +266,7 @@
 			self._refresh();
 
 			self._trigger("afterRemove");
+			self._trigger("onChange");
 		},
 
 		_removeAllHandler: function(e)
@@ -283,6 +286,7 @@
 			self._refresh();
 
 			self._trigger("afterRemoveAll");
+			self._trigger("onChange");
 		},
 
 		_refresh: function()
@@ -533,6 +537,8 @@
 			self.element.append(selectItem);
 			list.append(listItem);
 
+			self._trigger("onChange");
+
 			self._refresh();
 		},
 
@@ -564,6 +570,10 @@
 			self.element.append(selectItems.join("\n"));
 			self.sourceList.append(sourceItems.join("\n"));
 			self.targetList.append(targetItems.join("\n"));
+
+			self._trigger("onChange");
+
+			self._refresh();
 		},
 
 		_createSelectItem: function(item)
