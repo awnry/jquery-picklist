@@ -185,25 +185,22 @@
 
 			self._trigger("beforePopulate");
 
-			self.element.children().each(function()
-			{
-				var text = $(this).text();
-				var copy = $("<li/>")
-						.text(text)
-						.attr("label", text)
-						.attr(self.options.listItemValueAttribute, $(this).val())
-						.addClass(self.options.listItemClass);
+			var sourceListItems = [];
+			var targetListItems = [];
+			var selectItems = self.element.children();
 
-				if($(this).attr("selected") == "selected")
-				{
-					self.targetList.append( copy );
-				}
-				else
-				{
-					self.sourceList.append( copy );
-				}
+			selectItems.not(":selected").each(function()
+			{
+				sourceListItems.push( self._createDoppelganger(this) );
 			});
 
+			selectItems.filter(":selected").each(function()
+			{
+				targetListItems.push( self._createDoppelganger(this) );
+			});
+
+			self.sourceList.append(sourceListItems.join("\n"));
+			self.targetList.append(targetListItems.join("\n"));
 			self.insertItems(self.options.items);
 
 			self._trigger("afterPopulate");
@@ -594,6 +591,12 @@
 			}
 
 			return "<li " + self.options.listItemValueAttribute + "='" + item.value + "' label='" + item.label + "' class='" + self.options.listItemClass + "'>" + item.label + "</li>";
+		},
+
+		_createDoppelganger: function(item)
+		{
+			var self = this;
+			return "<li " + self.options.listItemValueAttribute + "='" + $(item).val() + "' label='" + $(item).text() + "' class='" + self.options.listItemClass + "'>" + $(item).text() + "</li>";
 		},
 
 		_getItemValue: function(item)
