@@ -1,5 +1,5 @@
 /**
- * jQuery UI PickList Widget
+ * jQuery PickList Widget
  *
  * Copyright (c) 2012 Jonathon Freeman <jonathon@awnry.com>
  * Distributed under the terms of the MIT License.
@@ -580,7 +580,7 @@
 			{
 				var richItemHtml = item.element.clone().wrap("<div>").parent().html();
 				item.element.hide();
-				return "<li " + self.options.listItemValueAttribute + "='" + item.value + "' label='" + item.label + "' class='" + self.options.listItemClass + " " + self.options.richListItemClass + "'>" + richItemHtml + "</li>";				
+				return "<li " + self.options.listItemValueAttribute + "='" + item.value + "' label='" + item.label + "' class='" + self.options.listItemClass + " " + self.options.richListItemClass + "'>" + richItemHtml + "</li>";
 			}
 
 			return "<li " + self.options.listItemValueAttribute + "='" + item.value + "' label='" + item.label + "' class='" + self.options.listItemClass + "'>" + item.label + "</li>";
