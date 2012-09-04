@@ -232,10 +232,16 @@
 			var items = self.sourceList.children(".ui-selected");
 			self.targetList.append( self._removeSelections(items) );
 
+			var itemIds = [];
 			items.each(function()
 			{
-				self.element.children("[value='" + self._getItemValue(this) + "']").attr("selected", "selected");
+				itemIds.push( self._getItemValue(this) );
 			});
+
+			self.element.children().filter(function()
+			{
+				return $.inArray($(this).val(), itemIds);
+			}).attr("selected", "selected");
 
 			self._refresh();
 
@@ -252,10 +258,16 @@
 			var items = self.targetList.children(".ui-selected");
 			self.sourceList.append( self._removeSelections(items) );
 
+			var itemIds = [];
 			items.each(function()
 			{
-				self.element.children("[value='" + self._getItemValue(this) + "']").removeAttr("selected");
+				itemIds.push( self._getItemValue(this) );
 			});
+
+			self.element.children().filter(function()
+			{
+				return $.inArray($(this).val(), itemIds);
+			}).removeAttr("selected");
 
 			self._refresh();
 
