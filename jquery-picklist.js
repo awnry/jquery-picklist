@@ -215,10 +215,7 @@
 			var items = self.sourceList.children();
 			self.targetList.append( self._removeSelections(items) );
 
-			items.each(function()
-			{
-				self.element.children("[value='" + self._getItemValue(this) + "']").attr("selected", "selected");
-			});
+			self.element.children().not(":selected").attr("selected", "selected");
 
 			self._refresh();
 
@@ -275,10 +272,7 @@
 			var items = self.targetList.children();
 			self.sourceList.append( self._removeSelections(items) );
 
-			items.each(function()
-			{
-				self.element.children("[value='" + self._getItemValue(this) + "']").removeAttr("selected");
-			});
+			self.element.children().filter(":selected").removeAttr("selected");
 
 			self._refresh();
 
