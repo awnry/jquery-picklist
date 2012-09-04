@@ -240,7 +240,7 @@
 
 			self.element.children().filter(function()
 			{
-				return $.inArray(this.value, itemIds);
+				return $.inArray(this.value, itemIds) != -1;
 			}).attr("selected", "selected");
 
 			self._refresh();
@@ -266,7 +266,7 @@
 
 			self.element.children().filter(function()
 			{
-				return $.inArray(this.value, itemIds);
+				return $.inArray(this.value, itemIds) != -1;
 			}).removeAttr("selected");
 
 			self._refresh();
