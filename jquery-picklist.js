@@ -10,6 +10,8 @@
 {
 	$.widget("awnry.pickList",
 	{
+		widgetEventPrefix: "pickList_",
+
 		options:
 		{
 			// Container classes
