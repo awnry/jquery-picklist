@@ -14,6 +14,7 @@
 	<script type="text/javascript">
 		$(function()
 		{
+			// Example of adding your event handler during initialization via options.
 			$("#callbacks").pickList(
 			{
 				"beforeBuild": eventHandler,
@@ -35,6 +36,7 @@
 				"onDestroy": eventHandler
 			});
 
+			// Example of adding your event handler after initialization via type binding.
 			$("#callbacks").bind("picklist_onchange", changeHandler);
 
 			$("#clearConsole").click(function()
