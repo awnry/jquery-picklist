@@ -221,8 +221,8 @@
 
 			self._refresh();
 
-			self._trigger("afterAddAll");
-			self._trigger("onChange");
+			self._trigger("afterAddAll", null, { items: items });
+			self._trigger("onChange", null, { type: "addAll", items: items });
 		},
 
 		_addHandler: function(e)
@@ -247,8 +247,8 @@
 
 			self._refresh();
 
-			self._trigger("afterAdd");
-			self._trigger("onChange");
+			self._trigger("afterAdd", null, { items: items });
+			self._trigger("onChange", null, { type: "add", items: items });
 		},
 
 		_removeHandler: function(e)
@@ -273,8 +273,8 @@
 
 			self._refresh();
 
-			self._trigger("afterRemove");
-			self._trigger("onChange");
+			self._trigger("afterRemove", null, { items: items });
+			self._trigger("onChange", null, { type: "remove", items: items });
 		},
 
 		_removeAllHandler: function(e)
@@ -290,8 +290,8 @@
 
 			self._refresh();
 
-			self._trigger("afterRemoveAll");
-			self._trigger("onChange");
+			self._trigger("afterRemoveAll", null, { items: items });
+			self._trigger("onChange", null, { type: "removeAll", items: items });
 		},
 
 		_refresh: function()

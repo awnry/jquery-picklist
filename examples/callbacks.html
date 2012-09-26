@@ -28,13 +28,14 @@
 				"afterRemove": eventHandler,
 				"beforeRemoveAll": eventHandler,
 				"afterRemoveAll": eventHandler,
-				"onChange": eventHandler,
 				"beforeRefresh": eventHandler,
 				"afterRefresh": eventHandler,
 				"beforeRefreshControls": eventHandler,
 				"afterRefreshControls": eventHandler,
 				"onDestroy": eventHandler
 			});
+
+			$("#callbacks").bind("picklist_onchange", changeHandler);
 
 			$("#clearConsole").click(function()
 			{
@@ -45,7 +46,24 @@
 
 		function eventHandler(event)
 		{
-			$("#console ol").append( $("<li>" + event.type.replace("picklist_", "") + "</li>") );
+			logConsole(event.type.replace("picklist_", ""));
+		}
+
+		function changeHandler(event, obj)
+		{
+			var itemIds = [];
+
+			obj.items.each(function()
+			{
+				itemIds.push($(this).attr("data-value"));
+			});
+
+			logConsole(event.type.replace("picklist_", "") + " [" + obj.type + ": " + itemIds.join(", ") + "]");
+		}
+
+		function logConsole(msg)
+		{
+			$("#console ol").append("<li>" + msg + "</li>");
 			$("#console").scrollTop( $("#console")[0].scrollHeight - $("#console").height() );
 		}
 
