@@ -45,7 +45,7 @@
 
 		function eventHandler(event)
 		{
-			$("#console ol").append( $("<li>" + event.type.replace("picklist", "") + "</li>") );
+			$("#console ol").append( $("<li>" + event.type.replace("picklist_", "") + "</li>") );
 			$("#console").scrollTop( $("#console")[0].scrollHeight - $("#console").height() );
 		}
 
