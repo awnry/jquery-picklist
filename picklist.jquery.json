@@ -1,6 +1,6 @@
 {
 	"name": "picklist",
-	"version": "0.10.1",
+	"version": "0.10.2",
 	"title": "jQuery PickList",
 
 	"author":
@@ -14,16 +14,20 @@
 	[
 		{
 			"type": "MIT",
-			"url": "LICENSE"
+			"url": "http://jquery-ui-picklist.googlecode.com/svn/trunk/LICENSE"
 		}
 	],
 
 	"dependencies":
 	{
-		"jquery": "1.4"
+		"jquery": ">=1.4"
 	},
 
 	"homepage": "http://code.google.com/p/jquery-ui-picklist/",
+	"bugs": "http://code.google.com/p/jquery-ui-picklist/issues/list",
+	"docs": "http://code.google.com/p/jquery-ui-picklist/w/list",
+	"demo": "http://code.google.com/p/jquery-ui-picklist/wiki/Demos",
+	"download": "http://code.google.com/p/jquery-ui-picklist/downloads/detail?name=jquery-picklist-0.10.2.zip",
 
 	"description": "Turns an HTML multiple option select box into a side-by-side pick list control",
 
