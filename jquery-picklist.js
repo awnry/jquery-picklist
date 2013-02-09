@@ -1,7 +1,7 @@
 /**
  * jQuery PickList Widget
  *
- * Copyright (c) 2012 Jonathon Freeman <jonathon@awnry.com>
+ * Copyright (c) 2012-2013 Jonathon Freeman <jonathon@awnry.com>
  * Distributed under the terms of the MIT License.
  *
  * http://code.google.com/p/jquery-ui-picklist/
