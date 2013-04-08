@@ -10,6 +10,7 @@ For detailed usage demos, visit: http://code.google.com/p/jquery-ui-picklist/wik
   * Support for items with rich HTML content
   * CTRL + click selects multiple items
   * SHIFT + click selects a range of items
+  * Double-clicking moves items
   * Compatible with ordinary form submission
   * Works in all major browsers (IE, FF, Chrome, Opera, and Safari)
   * Many options for customization

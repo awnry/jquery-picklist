@@ -1,6 +1,6 @@
 {
 	"name": "picklist",
-	"version": "0.10.2",
+	"version": "0.11.0",
 	"title": "jQuery PickList",
 
 	"author":
@@ -27,7 +27,7 @@
 	"bugs": "http://code.google.com/p/jquery-ui-picklist/issues/list",
 	"docs": "http://code.google.com/p/jquery-ui-picklist/w/list",
 	"demo": "http://code.google.com/p/jquery-ui-picklist/wiki/Demos",
-	"download": "http://code.google.com/p/jquery-ui-picklist/downloads/detail?name=jquery-picklist-0.10.2.zip",
+	"download": "http://code.google.com/p/jquery-ui-picklist/downloads/detail?name=jquery-picklist-0.11.0.zip",
 
 	"description": "Turns an HTML multiple option select box into a side-by-side pick list control",
 
