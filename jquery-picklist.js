@@ -123,6 +123,32 @@
 					.append(label)
 					.append(self.sourceList);
 
+			self.sourceList.delegate("li", "dblclick", {pickList: self}, function(e)
+			{
+				var self = e.data.pickList;
+
+				self._trigger("beforeAdd");
+
+				var items = self.sourceList.children(".ui-selected");
+				self.targetList.append( self._removeSelections(items) );
+
+				var itemIds = [];
+				items.each(function()
+				{
+					itemIds.push( self._getItemValue(this) );
+				});
+
+				self.element.children().filter(function()
+				{
+					return $.inArray(this.value, itemIds) != -1;
+				}).attr("selected", "selected");
+
+				self._refresh();
+
+				self._trigger("afterAdd", null, { items: items });
+				self._trigger("onChange", null, { type: "add", items: items });
+			});
+
 			return container;
 		},
 
@@ -157,6 +183,32 @@
 			container
 					.append(label)
 					.append(self.targetList);
+
+			self.targetList.delegate("li", "dblclick", {pickList: self}, function(e)
+			{
+				var self = e.data.pickList;
+
+				self._trigger("beforeRemove");
+
+				var items = $(e.target);
+				self.sourceList.append( self._removeSelections(items) );
+
+				var itemIds = [];
+				items.each(function()
+				{
+					itemIds.push( self._getItemValue(this) );
+				});
+
+				self.element.children().filter(function()
+				{
+					return $.inArray(this.value, itemIds) != -1;
+				}).removeAttr("selected");
+
+				self._refresh();
+
+				self._trigger("afterRemove", null, { items: items });
+				self._trigger("onChange", null, { type: "remove", items: items });
+			});
 
 			return container;
 		},
