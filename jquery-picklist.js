@@ -277,12 +277,16 @@
 			self._trigger("beforeAddAll");
 
 			var items = self.sourceList.children();
-			self.targetList.append( self._removeSelections(items) );
+			var visible = $(items).filter(':visible');
+			visible = $(visible);
 
-			self.element.children().not(":selected").attr("selected", "selected");
+			self.targetList.append( self._removeSelections($(items).filter(':visible')) );
+
+			visible.each(function(){
+				self.element.find("option[value='"+$(this).data().value+"']").prop("selected", true);
+			});
 
 			self._refresh();
-
 			self._trigger("afterAddAll", null, { items: items });
 			self._trigger("onChange", null, { type: "addAll", items: items });
 		},
